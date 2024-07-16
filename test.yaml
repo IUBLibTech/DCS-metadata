@@ -1,0 +1,89 @@
+# yaml-language-server: $schema=schemas/core.json
+version: dcs-digitization-workflow-metadata@v1
+project_information:
+  id: VAA1234
+  request_date: 2024-01-01
+  completion_date: 2024-01-31
+  contacts:
+    - name: Brian Wheeler
+      email: bdwheele@iu.edu
+    - name: Sprag Johson
+      email: sqjohnso@iu.edu
+  notes: No Notes
+
+descriptive_metadata:
+  title: my title
+  author: my author
+  identifiers:
+    - call_number: abefa
+    - iucat_catkey: "13412"
+
+constituents:
+  - identifying_mark: 
+    label: 
+    physical_media_description: 
+      media_type: Missing
+      notes: This object is missing
+  - identifying_mark: 
+    label: 
+    physical_media_description: 
+      media_type: 
+      position: 1
+      diameter: 7
+      recording_method: 
+      material: 
+      substrate: 
+      coating: 
+      conservation_concerns:
+        delamination: false
+        exudation: false
+        oxidation: false
+        cracked: false
+        warped: false
+        dirty: false
+        scratched: false
+        worn: false
+        broken: false
+        fungus: false
+        remediation_notes: No Remediation
+      sequences:
+        - speed: 
+          sound_field: 
+          groove_size: 
+          groove_orientation: 
+          equalization: 
+          duration: 
+          notes: No Notes
+  - identifying_mark: 
+   label: 
+   physical_media_description: 
+    media_type: 
+    position: 1
+    diameter: 7
+    recording_method: 
+    material: 
+    substrate: 
+    coating: 
+    conservation_concerns:
+      delamination: false
+      exudation: false
+      oxidation: false
+      cracked: false
+      warped: false
+      dirty: false
+      scratched: false
+      worn: false
+      broken: false
+      fungus: false
+      remediation_notes: No Remediation
+    sequences:
+      - speed: "33.3"
+        sound_field: 
+        groove_size: unknown
+        groove_orientation: unknown
+        equalization: unknown
+        duration: 
+        notes: No Notes
+
+
+

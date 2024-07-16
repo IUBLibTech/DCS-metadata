@@ -1,0 +1,147 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://dlib.indiana.edu/dcs/schemas/audiocassette",
+    
+    "audiocassette": {
+        "title": "Audiocassette",
+        "description": "Audiocassette",
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["media_type", "position", "cassette_type", "tape_type", "tape_stock_brand", "format_duration",
+                    "conservation_concerns", "sequences"],
+        "properties": {
+            "media_type": {
+                "title": "Media Type",
+                "description": "Media Type",
+                "const": "Audiocassette"
+            },
+            "position": {
+                "title": "Position",
+                "description": "Position of the object in the viewing/listening experience",
+                "type": "integer",
+                "minimum": 1,
+                "default": 1
+            },
+            "cassette_type": {
+                "title": "Type of cassette",
+                "description": "Type of cassette",
+                "type": "string",
+                "enum": ["Compact", "Micro", "Mini"],
+                "default": "Compact"
+            },
+
+            "tape_type": {
+                "title": "Type of tape",
+                "description": "Type of tape",
+                "type": "string",
+                "enum": ["Unknown", "I", "II", "III", "IV"],
+                "default": "Unknown"
+
+            },
+            "tape_stock_brand": {
+                "title": "Tape stock brand",
+                "description": "Tape stock brand",
+                "type": "string"
+            },
+
+            "format_duration": {
+                "title": "Format duration",
+                "description": "Format Duration",
+                "type": "string"
+            },
+            "conservation_concerns": {
+                "title": "Conservation Concerns",
+                "description": "Media evaluation and remediations",
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["pack_deformation", "damaged_tape", "damaged_shell", "fungus", "soft_binder_syndrome", "other_contaminants",
+                            "remediation_notes"],
+                "properties": {
+                    "pack_deformation": {
+                        "title": "Pack deformation",
+                        "description": "Type of cassette",
+                        "type": "string",
+                        "enum": ["None", "Minor", "Moderate", "Severe"],
+                        "default": "None"
+                    },
+                    "damaged_tape": {
+                        "title": "Tape damaged",
+                        "description": "the tape is damaged",
+                        "type": "boolean",
+                        "default": "false"
+                    },
+                    "damaged_shell": {
+                        "title": "Shell damaged",
+                        "description": "the tape shell is damaged",
+                        "type": "boolean",
+                        "default": "false"
+                    },
+                    "fungus": {
+                        "title": "Fungus",
+                        "description": "the tape has a fungus",
+                        "type": "boolean",
+                        "default": "false"
+                    },
+                    "soft_binder_syndrome": {
+                        "title": "Soft binder syndrome",
+                        "description": "the tape has a soft binder",
+                        "type": "boolean",
+                        "default": "false"
+                    },
+                    "other_contaminants": {
+                        "title": "Other Contaminants",
+                        "description": "the tape has other contaminants",
+                        "type": "boolean",
+                        "default": "false"
+                    },
+                    "remediation_notes": {
+                        "title": "Remediation Notes",
+                        "description": "Notes and actions for remediation of concerns",
+                        "type": "string",
+                        "default": "No Remediation"
+                    }
+                }
+            },
+            "sequences": {
+                "title": "Digitized Tape Sequences",
+                "description": "Sequences digitized",
+                "type": "array",
+                "minContains": 1,
+                "items": {
+                    "title": "Digitization Sequence",
+                    "description": "Digitized file",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["tape_speed", "sound_field", "duration", "notes"],
+                    "properties": {
+                        "tape_speed": {
+                            "title": "Tape Speed",
+                            "description": "Recording speed used in inches per second",
+                            "type": "string",
+                            "enum": ["3.75ips", "1.875ips", "0.9375ips", "0.46875ips", "unknown"],
+                            "default": "1.875ips"
+                        },
+                        "noise_reduction": {
+                            "title": "Noise reduction",
+                            "description": "Noise reduction",
+                            "type": "string",
+                            "enum": ["Unknown", "None", "Dolby Unknown", "Dolby B", "Dolby C"],
+                            "default": "Unknown"
+                        },
+                        "sound_field": {"$ref": "common.json#/sound_field"},
+                        "duration": {"$ref": "common.json#/duration"},
+                        "notes": {
+                            "title": "Digitization Notes",
+                            "description": "Notes about the digitization",
+                            "type": "string",
+                            "default": "No Notes"
+                        }
+                    }
+                }
+
+                
+            }       
+
+        }
+    }
+}

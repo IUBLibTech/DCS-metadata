@@ -1,0 +1,438 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://dlib.indiana.edu/dcs/schemas/film",
+    
+    
+    
+    
+    "title": "Film-specific bits for the core schema",
+    "$defs": {
+        "scale": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 4, 
+            "default": 0
+        }
+    },
+    "film_media": {
+        "title": "Film-Based Media",
+        "description": "Properties specific to film-based media",
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+            "media_type",
+            "media_characteristics",
+            "digitization_parameters"
+        ],
+        "properties": {
+            "media_type": {
+                "const": "film"
+            },
+            "media_characteristics": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "gauge",
+                    "footage",
+                    "frame_rate",
+                    "soundtrack_type",
+                    "film_stock_brand",
+                    "film_stock_type",
+                    "image_color_type"
+                ],
+                "properties": {
+                    "gauge": {
+                        "description": "Gauge",
+                        "type": "string",
+                        "enum": [
+                            "8mm",
+                            "16mm",
+                            "35mm"
+                        ]
+                    },
+                    "footage": {
+                        "description": "Reel Footage",
+                        "anyOf": [
+                                {
+                                    "type": "number",
+                                    "minimum": 1,
+                                    "description": "Length in feet"
+                                },
+                                {
+                                    "const": "Unknown",
+                                    "description": "Unknown length"
+                                },
+                                {
+                                    "type": "string",
+                                    "pattern": "Other: .+",
+                                    "description": "Other length"
+                                }
+                            ]
+                        
+                    },
+                    "frame_rate": {
+                        "description": "Frame Rate",
+                        "type": "string",
+                        "enum": [
+                            "24 fps",
+                            "18 fps",
+                            "16 fps"
+                        ]
+                    },
+                    "soundtrack_type": {
+                        "description": "Physical Soundtrack Encoding",
+                        "type": "array",
+                        "uniqueItems": true,
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "no soundtrack",
+                                "magnetic_track",
+                                "optical_sound_track",
+                                "optical_variable_area",
+                                "optical_variable_density",
+                                "digital_sdds",
+                                "digital_dts",
+                                "digital_dolby_digital",
+                                "sound_on_separate_media",
+                                "digital_dolby_a",
+                                "digital_dolby_sr"
+                            ]
+                        }
+                    },
+                    "film_stock_brand": {
+                        "description": "Film stock details:  brand, product, markings, etc",
+                        "type": "string"
+                    },
+                    "film_stock_type": {
+                        "description": "Film stock type",
+                        "type": "array",
+                        "uniqueItems": true,
+                        "minContains": 1,
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "acetate",
+                                "polyester",
+                                "nitrate",
+                                "mixed"
+                            ]
+                        }
+                    },
+                    "image_color_type": {
+                        "description": "Color type",
+                        "type": "array",
+                        "uniqueItems": true,
+                        "minContains": 1,
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "bw",
+                                "toned",
+                                "tinted",
+                                "hand_coloring",
+                                "stencil_coloring",
+                                "color",
+                                "ektacrhome",
+                                "kodachrome",
+                                "technicolor",
+                                "anscochrome",
+                                "eco",
+                                "eastman"
+                            ]
+                        }
+                    }
+                }
+            },
+            "digitization_parameters": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "duration",
+                    "resolution",                    
+                    "aspect_ratio",
+                    "anamorphic",
+                    "color_space"
+                ],
+                "properties": {
+
+                    "duration": {
+                        "description": "media duration",
+                        "type": "string",
+                        "pattern": "([0-9]+:)?[0-9]{2}:[0-9]{2}"
+                    },
+                    "resolution": {
+                        "description": "Scanned Image Resolution",
+                        "type": "string",
+                        "enum": [
+                            "2k",
+                            "4k",
+                            "audio_only"
+                        ]
+                    },
+                    "aspect_ratio": {
+                        "description": "Aspect Ratio",
+                        "type": "string",
+                        "enum": [
+                            "1.18",
+                            "1.33",
+                            "1.36",
+                            "1.37",
+                            "1.66",
+                            "1.85",
+                            "2.35",
+                            "2.39",
+                            "2.59",
+                            "2.66"
+                        ]                        
+                    },
+                    "anamorphic": {
+                        "description": "anamorphic picture",
+                        "type": "boolean",
+                        "default": false
+                    },
+                    "color_space": {
+                        "description": "Digitization colorspace",
+                        "type": "string",
+                        "enum": [
+                            "Linear 16-bit",
+                            "Linear 10-bit",
+                            "Logarithmic 10-bit"
+                        ]
+                    },
+                    "soundtracks": {
+                        "description": "List of digitized soundtracks",
+                        "type": "array",
+                        "items": {
+                            "description": "Soundtrack description",
+                            "type": "object",
+                            "sound_field": {
+                                "description": "Sound Field",
+                                "type": "string",
+                                "enum": [
+                                    "mono",
+                                    "stereo",
+                                    "surround",
+                                    "multitrack",
+                                    "dual"
+                                ]
+                            }
+                        }
+                    }
+                }                
+            },
+            "conservation_details": {
+                "title": "film conservation details",
+                "description": "film conservation details",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [],
+                "properties": {
+                    "brittle": {
+                        "description": "Brittleness rating",
+                        "$ref": "#/$defs/scale"
+                    },
+                    "broken": {
+                        "description": "Brokenness rating",
+                        "$ref": "#/$defs/scale"
+                    },
+                    "channeling": {
+                        "description": "Channeling rating",
+                        "$ref": "#/$defs/scale"
+                    },
+                    "color_fade": {
+                        "description": "Color fade rating",
+                        "$ref": "#/$defs/scale"
+                    },
+                    "cue_marks": {
+                        "description": "Cue marks",
+                        "type": "integer",
+                        "minimum": 0
+                    },
+                    "dirty": {
+                        "description": "Dirtyness rating",
+                        "$ref": "#/$defs/scale"
+                    },
+                    "edge_damage": {
+                        "description": "edge damage rating",
+                        "$ref": "#/$defs/scale"
+                    },
+                    "holes": {
+                        "description": "holes rating",
+                        "$ref": "#/$defs/scale"                        
+                    },
+                    "peeling": {
+                        "description": "peeling rating",
+                        "$ref": "#/$defs/scale"
+                    },
+                    "perforation_damage": {
+                        "description": "perforation damage rating",
+                        "$ref": "#/$defs/scale"
+                    },
+                    "rusty": {
+                        "description": "rust damage rating",
+                        "$ref": "#/$defs/scale"
+                    },
+                    "scratches": {
+                        "description": "scratch damage rating",
+                        "$ref": "#/$defs/scale"
+                    },
+                    "soundtrack_damage": {
+                        "description": "soundtrack damage rating",
+                        "$ref": "#/$defs/scale"
+                    },
+                    "splice_damage": {
+                        "description": "splice damage rating",
+                        "$ref": "#/$defs/scale"
+                    },
+                    "stains": {
+                        "description": "stain damage rating",
+                        "$ref": "#/$defs/scale"
+                    },
+                    "sticky": {
+                        "description": "sticky damage rating",
+                        "$ref": "#/$defs/scale"
+                    },
+                    "tape_residue": {
+                        "description": "tape residue damage rating",
+                        "$ref": "#/$defs/scale"
+                    },
+                    "tearing": {
+                        "description": "tearing damage rating",
+                        "$ref": "#/$defs/scale"
+                    },
+                    "warp": {
+                        "description": "warping damage rating",
+                        "$ref": "#/$defs/scale"
+                    },
+                    "water_damage": {
+                        "description": "water damage rating",
+                        "$ref": "#/$defs/scale"
+                    },
+                    "shrinkage": {
+                        "description": "shrinkage",
+                        "type": "number",
+                        "minimum": 0.0
+                    },
+                    "ad_strip": {
+                        "description": "beats me.",
+                        "type": "number",
+                        "minimum": 0.0,
+                        "maximum": 3.0,
+                        "multiple": 0.5
+                    },
+                    "missing_footage": {
+                        "description": "Missing footage",
+                        "type": "string"
+                    },
+                    "miscellaneous": {
+                        "description": "Miscellaneous Notes",
+                        "type": "string"
+                    },
+                    "inspection_flags": {
+                        "description": "inspection flags",
+                        "type": "array",
+                        "uniqueItems": true,
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "mold",
+                                "poor_wind",
+                                "not_on_core_or_reel",
+                                "lacquer_treated",
+                                "replastitized",
+                                "dusty",
+                                "spoking"
+                            ]
+                        }
+                    },
+                    "clean": {
+                        "description": "Cleaning Instructions",
+                        "type": "string",
+                        "enum": [
+                            "yes",
+                            "no",
+                            "hand clean only"
+                        ],
+                        "default": "no"
+                    
+                    },
+                    "conservation_actions": {
+                        "description": "Conservation actions",
+                        "type": "string",
+                        "default": "none"
+                    }
+                }                
+            },
+            "content_disposition": {
+                "description": "General information about the film content",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [],
+                "properties": {
+                    "generation": {
+                        "description": "Generation",
+                        "type": "array",
+                        "uniqueItems": true,
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "projection_print",
+                                "answer_print",
+                                "camera_original",
+                                "composite",
+                                "duplicate",
+                                "edited",
+                                "fine_grained_master",
+                                "intermediate",
+                                "kinescope",
+                                "master",
+                                "mezzanine",
+                                "negative",
+                                "original",
+                                "work_print",
+                                "separation_master",
+                                "positive",
+                                "reversal",
+                                "other_generation"
+                            ]
+                        }
+                    },
+                    "image_content_type": {
+                        "description": "Image Content Type",
+                        "type": "array",
+                        "uniqueItems": true,
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "a_roll",
+                                "b_roll",
+                                "c_roll",
+                                "d_roll",
+                                "outs_and_trims"
+                            ]
+                        }
+                    },
+                    "sound_track_content": {
+                        "description": "Types of soundtrack content",
+                        "type": "array",
+                        "uniqueItems": true,
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "music_track",
+                                "effects_track",
+                                "composite_track",
+                                "dialog",
+                                "outtakes",
+                                "narration"
+                            ]
+                        }
+                    }
+                }                
+            }
+        }
+    }
+}
+
+

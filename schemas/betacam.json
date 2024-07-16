@@ -1,0 +1,141 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://dlib.indiana.edu/dcs/schemas/betacam",
+    
+    "betacam": {
+        "title": "Betacam",
+        "description": "Betacam family",
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["media_type", "position", "format_version",  "tape_stock_brand", "format_duration",
+                    "conservation_concerns", "sequences"],
+        "properties": {
+            "media_type": {
+                "title": "Media Type",
+                "description": "Media Type",
+                "const": "VHS"
+            },
+            "position": {
+                "title": "Position",
+                "description": "Position of the object in the viewing/listening experience",
+                "type": "integer",
+                "minimum": 1,
+                "default": 1
+            },
+
+            "format_version": {
+                "title": "Betacam Format",
+                "description": "Physical format size",
+                "type": "string",
+                "enum": ["large", "small"],
+                "default": "small"
+            },
+
+            "tape_stock_brand": {
+                "title": "Tape stock brand",
+                "description": "Tape stock brand",
+                "type": "string"
+            },
+
+            "format_duration": {
+                "title": "Format duration",
+                "description": "Format Duration",
+                "type": "string"
+            },
+            "conservation_concerns": {
+                "title": "Conservation Concerns",
+                "description": "Media evaluation and remediations",
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["pack_deformation", "damaged_tape", "damaged_shell", "fungus", "soft_binder_syndrome", "other_contaminants",
+                            "remediation_notes"],
+                "properties": {
+                    "pack_deformation": {
+                        "title": "Pack deformation",
+                        "description": "Type of cassette",
+                        "type": "string",
+                        "enum": ["None", "Minor", "Moderate", "Severe"],
+                        "default": "None"
+                    },
+                    "damaged_tape": {
+                        "title": "Tape damaged",
+                        "description": "the tape is damaged",
+                        "type": "boolean",
+                        "default": "false"
+                    },
+                    "damaged_shell": {
+                        "title": "Shell damaged",
+                        "description": "the tape shell is damaged",
+                        "type": "boolean",
+                        "default": "false"
+                    },
+                    "fungus": {
+                        "title": "Fungus",
+                        "description": "the tape has a fungus",
+                        "type": "boolean",
+                        "default": "false"
+                    },
+                    "soft_binder_syndrome": {
+                        "title": "Soft binder syndrome",
+                        "description": "the tape has a soft binder",
+                        "type": "boolean",
+                        "default": "false"
+                    },
+                    "other_contaminants": {
+                        "title": "Other Contaminants",
+                        "description": "the tape has other contaminants",
+                        "type": "boolean",
+                        "default": "false"
+                    },
+                    "remediation_notes": {
+                        "title": "Remediation Notes",
+                        "description": "Notes and actions for remediation of concerns",
+                        "type": "string",
+                        "default": "No Remediation"
+                    }
+                }
+            },
+            "sequences": {
+                "title": "Digitized Betacam Sequences",
+                "description": "Sequences digitized",
+                "type": "array",
+                "minContains": 1,
+                "items": {
+                    "title": "Digitization Sequence",
+                    "description": "Digitized file",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["recording_standard", "image_format", "duration", "notes"],
+                    "properties": {
+                        "recording_standard": {
+                            "title": "Recording Standard",
+                            "description": "standard used to record the video",
+                            "type": "string",
+                            "enum": ["NTSC", "PAL", "SECAM", "unknown"],
+                            "default": "NTSC"
+                        },
+
+                        "image_format": {
+                            "title": "Image format",
+                            "description": "format of the recorded image",
+                            "type": "string",
+                            "enum": ["4:3", "16:9", "unknown"],
+                            "default": "4:3"
+                        },
+                        
+                        "duration": {"$ref": "common.json#/duration"},
+                        "notes": {
+                            "title": "Digitization Notes",
+                            "description": "Notes about the digitization",
+                            "type": "string",
+                            "default": "No Notes"
+                        }
+                    }
+                }
+
+                
+            }       
+
+        }
+    }
+}

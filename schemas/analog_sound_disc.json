@@ -1,0 +1,141 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://dlib.indiana.edu/dcs/schemas/analog_sound_disc",
+    
+    "analog_sound_disc": {
+    
+        "title": "Analog Sound Disc",
+        "description": "Analog sound disc-specific bits for the core schema",
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+            "media_type",
+            "position",
+            "diameter", "recording_method", "material", "substrate", "coating",
+            "conservation_concerns",
+            "sequences"
+        ],
+        "properties": {
+            "media_type": {
+                "title": "Media Type",
+                "description": "Media Type",
+                "type": "string",
+                "enum": ["45", "78", "Aluminum Disc", "Lacquer Disc", "Other Analog Sound Disc"],
+                "default": "unspecified"
+            },
+            "position": {
+                "$ref": "common.json#/position"
+            },
+            "diameter": {
+                "title": "Disc Diameter",
+                "type": "number",
+                "minimum": 1,
+                "default": 7
+            },
+
+            "recording_method": {
+                "title": "Recording Method",
+                "type": "string",
+                "enum": ["pressed", "cut", "pregrooved", "unknown"],
+                "default": "unknown"
+            },
+            "material": {
+                "title": "Disc Material",
+                "type": "string",
+                "enum": ["plastic", "shellac", "n/a", "unknown"],
+                "default": "unknown"
+            },
+            "substrate": {
+                "title": "Substrate",
+                "type": "string",
+                "enum": ["n/a", "aluminum", "glass", "fiber", "steel", "unknown"],
+                "default": "n/a/"
+            },
+            "coating": {
+                "title": "Coating",
+                "type": "string",
+                "enum": ["n/a", "lacquer", "none", "unknown"],
+                "default": "n/a"
+            }, 
+
+            "conservation_concerns": {
+                "title": "Conservation Concerns",
+                "description": "Media evaluation and remediations",
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["remediation_notes", "delamination", "exudation", "oxidation", "cracked",
+                            "warped", "dirty", "scratched", "worn", "broken", "fungus"],
+                "properties": {
+                    "delamination": {"type": "boolean", "default": "false", "title": "delamination"},
+                    "exudation": {"type": "boolean", "default": "false", "title": "exudation"},
+                    "oxidation": {"type": "boolean", "default": "false", "title": "oxidation"},
+                    "cracked": {"type": "boolean", "default": "false", "title": "cracked"},
+                    "warped": {"type": "boolean", "default": "false", "title": "warped"},
+                    "dirty": {"type": "boolean", "default": "false", "title": "dirty"},
+                    "scratched": {"type": "boolean", "default": "false", "title": "scratched"},
+                    "worn": {"type": "boolean", "default": "false", "title": "worn"},
+                    "broken": {"type": "boolean", "default": "false", "title": "broken"},
+                    "fungus": {"type": "boolean", "default": "false", "title": "fungus"},
+                    "remediation_notes": {
+                        "title": "Remediation Notes",
+                        "description": "Notes and actions for remediation of concerns",
+                        "type": "string",
+                        "default": "No Remediation"
+                    }
+                }
+            },
+
+            "sequences": {
+                "title": "Digitized Disc Sequences",
+                "description": "Sequences digitized",
+                "type": "array",
+                "minContains": 1,
+                "items": {
+                    "title": "Disc Digitization Sequence",
+                    "description": "Digitized file",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["speed", "sound_field", "groove_size", "groove_orientation", "equalization", "duration", "notes"],
+                    "properties": {
+                        "speed": {
+                            "title": "Media Speed",
+                            "description": "media speed",
+                            "type": "string",
+                            "enum": ["33.3", "45", "78", "Unknown", "Mixed"],
+                            "default": "33.3"
+                        },
+
+                        "sound_field": {"$ref": "common.json#/sound_field"},
+
+                        "groove_size": {
+                            "title": "Groove Size",
+                            "type": "string",
+                            "enum": ["micro", "coarse", "unknown"],
+                            "default": "unknown"
+                        },
+                        "groove_orientation": {
+                            "title": "Groove Orientation",
+                            "type": "string",
+                            "enum": ["lateral", "vertical", "unknown"],
+                            "default": "unknown"
+                        },
+                        "equalization": {
+                            "title": "Equalization",
+                            "type": "string",
+                            "enum": ["NAB", "RIAA" ,"Other", "CCIR", "Unknown", "ffrr LP 1953", "NAB+80Hz", "BSI", "Early DECCA", "COLUMBIA", 
+                                    "ffrr 1949", "US MID 30", "WESTREX", "FLAT"],
+                            "default": "Unknown"
+                        },
+                        "duration": {"$ref": "common.json#/duration"},
+                        "notes": {
+                            "title": "Digitization Notes",
+                            "description": "Notes about the digitization",
+                            "type": "string",
+                            "default": "No Notes"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

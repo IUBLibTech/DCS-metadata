@@ -1,0 +1,6 @@
+{
+    "yaml.schemas": {
+        "file:///data/work_projects/DCS-metadata/schemas/core.json": "file:///data/work_projects/DCS-metadata/test.yaml",
+        "file:///home/bdwheele/work_projects/DCS-metadata/schemas/core.json": "file:///home/bdwheele/work_projects/DCS-metadata/test.yaml"
+    }
+}

@@ -1,0 +1,178 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://dlib.indiana.edu/dcs/schemas/core",
+    "title": "DCS Digitization Workflow Schema",
+    "description": "Digitization Workflow schema for objects scanned by DCS",
+    "type": "object",
+    "additonalProperties": false,
+    "required": [
+        "version",
+        "project_information",
+        "descriptive_metadata",
+        "constituents"
+    ],
+    "properties": {
+        "version": {
+            "const": "dcs-digitization-workflow-metadata@v1",
+            "description": "Digitization Workflow schema version"
+        },
+        "project_information": {
+            "title": "Project Information",
+            "description": "Information about the project to digitize this object",
+            "additionalProperties": false,
+            "required": ["id", "request_date", "completion_date", "contacts", "notes"],
+            "properties": {
+                "id": {
+                    "title": "Project ID",
+                    "description": "ID that identifies this intellectual object",
+                    "type": "string"
+                },
+                "request_date": {
+                    "title": "Request Date",
+                    "description": "Date the digitization was requested",
+                    "type": "string",
+                    "format": "date"
+                },
+                "completion_date": {
+                    "title": "Completion date",
+                    "description": "Date the digitization was completed",
+                    "type": "string",
+                    "format": "date"
+                },
+                "contacts": {
+                    "title": "Project Contacts",
+                    "description": "How to contact the owners",
+                    "type": "array",
+                    "minContains": 1,
+                    "items": {
+                        "title": "Contact Information",
+                        "description": "owner contact",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": ["name", "email"],
+                        "properties": {
+                            "name": {
+                                "title": "Contact Name",
+                                "description": "Contact name",
+                                "type": "string"
+                            },
+                            "email": {
+                                "title": "Contact Email",
+                                "description": "email address",
+                                "type": "string",
+                                "format": "email"
+                            }
+                        }
+                    }
+                },
+                "notes": {
+                    "title": "Project Notes",
+                    "description": "Notes about the project",
+                    "type": "string",
+                    "default": "No Notes"
+                }
+            }
+        },
+        "descriptive_metadata": {
+            "description": "Descriptive Metadata",
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "title",
+                "author",
+                "identifiers"
+            ],
+            "properties": {
+                "title": {
+                    "description": "Work Title",
+                    "type": "string"
+                },
+                "author": {
+                    "description": "Work Author",
+                    "type": "string"
+                },
+                "identifiers": {
+                    "description": "Identifiers for this work",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "iucat_barcode": {
+                                "type": "string",
+                                "description": "IUcat Barcode"
+                            },
+                            "iucat_catkey": {
+                                "type": "string",
+                                "description": "Catalog Key"
+                            },
+                            "call_number": {
+                                "type": "string",
+                                "description": "Call Number"
+                            },
+                            "local_identifier": {
+                                "description": "A locally-scoped Identifier",
+                                "type": "object",
+                                "additionalProperties": false,
+                                "required": [
+                                    "scope",
+                                    "identifier"
+                                ],
+                                "properties": {
+                                    "scope": {
+                                        "type": "string",
+                                        "description": "Scope for the identifier"
+                                    },
+                                    "identifier": {
+                                        "type": "string",
+                                        "description": "Local Identifier"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "constituents": {
+            "title": "Object Consituents",
+            "description": "physical objects which make up this object",
+            "type": "array",
+            "minContains": 1,
+            "items": {
+                "description": "Physical Object",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "identifying_mark",
+                    "label",
+                    "physical_media_description"
+                ],
+                "properties": {
+                    "identifying_mark": {
+                        "title": "Identifying mark",
+                        "description": "Information used to identify the physical object",
+                        "type": "string"
+                    },
+                    "label": {
+                        "title": "Label Text",
+                        "description": "Label/sleeve text or description",
+                        "type": "string"
+                    },
+                    "physical_media_description": {
+                        "title": "Physical Media Description",
+                        "description": "Description of the physical media",
+                        "anyOf": [
+                            {"$ref": "analog_sound_disc.json#analog_sound_disc"},
+                            {"$ref": "audiocassette.json#audiocassette"},
+                            {"$ref": "betacam.json#betacam"},
+                            {"$ref": "vhs.json#vhs"},
+                            {"$ref": "missing.json#missing"}
+                        ]           
+                    }
+                }
+            }
+        }
+    }
+
+}
