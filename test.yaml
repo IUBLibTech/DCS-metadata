@@ -1,89 +1,45 @@
 # yaml-language-server: $schema=schemas/core.json
 version: dcs-digitization-workflow-metadata@v1
 project_information:
-  id: VAA1234
-  request_date: 2024-01-01
-  completion_date: 2024-01-31
+  id: VZZ9999
+  request_date: 2024-07-16
+  completion_date: 
   contacts:
     - name: Brian Wheeler
       email: bdwheele@iu.edu
-    - name: Sprag Johson
-      email: sqjohnso@iu.edu
   notes: No Notes
-
 descriptive_metadata:
-  title: my title
-  author: my author
+  title: A beginner's guide to potato hubandry
+  author: t. tuber
   identifiers:
-    - call_number: abefa
-    - iucat_catkey: "13412"
-
+    - call_number: SB211.P8 B56
 constituents:
-  - identifying_mark: 
-    label: 
+  - label: potato
     physical_media_description: 
-      media_type: Missing
-      notes: This object is missing
-  - identifying_mark: 
-    label: 
-    physical_media_description: 
-      media_type: 
+      media_type: Audiocassette
       position: 1
-      diameter: 7
-      recording_method: 
-      material: 
-      substrate: 
-      coating: 
+      cassette_type: Compact
+      tape_type: I
+      tape_stock_brand: Scotch
+      format_duration: 90 min
       conservation_concerns:
-        delamination: false
-        exudation: false
-        oxidation: false
-        cracked: false
-        warped: false
-        dirty: false
-        scratched: false
-        worn: false
-        broken: false
+        pack_deformation: None
+        damaged_tape: false
+        damaged_shell: true
         fungus: false
-        remediation_notes: No Remediation
+        soft_binder_syndrome: false
+        other_contaminants: false
+        remediation_notes: Taped the shell together
       sequences:
-        - speed: 
-          sound_field: 
-          groove_size: 
-          groove_orientation: 
-          equalization: 
-          duration: 
+        - id: side 1
+          tape_speed: "1.875ips"
+          noise_reduction: Unknown
+          sound_field: stereo
+          duration: 22:30
+          notes: Recurring popping on the left channel
+        - id: side 2
+          tape_speed: "1.875ips"
+          sound_field: stereo
+          duration: 22:45
           notes: No Notes
-  - identifying_mark: 
-   label: 
-   physical_media_description: 
-    media_type: 
-    position: 1
-    diameter: 7
-    recording_method: 
-    material: 
-    substrate: 
-    coating: 
-    conservation_concerns:
-      delamination: false
-      exudation: false
-      oxidation: false
-      cracked: false
-      warped: false
-      dirty: false
-      scratched: false
-      worn: false
-      broken: false
-      fungus: false
-      remediation_notes: No Remediation
-    sequences:
-      - speed: "33.3"
-        sound_field: 
-        groove_size: unknown
-        groove_orientation: unknown
-        equalization: unknown
-        duration: 
-        notes: No Notes
-
-
 

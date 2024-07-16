@@ -112,8 +112,14 @@
                     "description": "Digitized file",
                     "type": "object",
                     "additionalProperties": false,
-                    "required": ["tape_speed", "sound_field", "duration", "notes"],
+                    "required": ["id", "tape_speed", "sound_field", "duration", "notes"],
                     "properties": {
+                        "id": {
+                            "title": "Sequence ID",
+                            "description": "Something to indicate what the file represents, such as 'side 1'",
+                            "type": "string"
+                        },
+
                         "tape_speed": {
                             "title": "Tape Speed",
                             "description": "Recording speed used in inches per second",

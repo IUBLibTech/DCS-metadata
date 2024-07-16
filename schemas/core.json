@@ -144,16 +144,10 @@
                 "type": "object",
                 "additionalProperties": false,
                 "required": [
-                    "identifying_mark",
                     "label",
                     "physical_media_description"
                 ],
                 "properties": {
-                    "identifying_mark": {
-                        "title": "Identifying mark",
-                        "description": "Information used to identify the physical object",
-                        "type": "string"
-                    },
                     "label": {
                         "title": "Label Text",
                         "description": "Label/sleeve text or description",

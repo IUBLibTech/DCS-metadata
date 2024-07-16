@@ -112,8 +112,13 @@
                     "description": "Digitized file",
                     "type": "object",
                     "additionalProperties": false,
-                    "required": ["playback_speed", "recording_standard", "image_format", "duration", "notes"],
+                    "required": ["id", "playback_speed", "recording_standard", "image_format", "duration", "notes"],
                     "properties": {
+                        "id": {
+                            "title": "Sequence ID",
+                            "description": "Something to indicate what the file represents, such as 'side 1'",
+                            "type": "string"
+                        },
                         "playback_speed": {
                             "title": "Playback Speed",
                             "description": "Recording speed used",

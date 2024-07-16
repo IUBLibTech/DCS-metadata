@@ -20,7 +20,7 @@
                 "title": "Media Type",
                 "description": "Media Type",
                 "type": "string",
-                "enum": ["45", "78", "Aluminum Disc", "Lacquer Disc", "Other Analog Sound Disc"],
+                "enum": ["45", "78", "Aluminum Disc", "Lacquer Disc", "LP", "Other Analog Sound Disc"],
                 "default": "unspecified"
             },
             "position": {
@@ -95,8 +95,13 @@
                     "description": "Digitized file",
                     "type": "object",
                     "additionalProperties": false,
-                    "required": ["speed", "sound_field", "groove_size", "groove_orientation", "equalization", "duration", "notes"],
+                    "required": ["id", "speed", "sound_field", "stylus_size", "groove_size", "groove_orientation", "equalization", "duration", "notes"],
                     "properties": {
+                        "id": {
+                            "title": "Sequence ID",
+                            "description": "Something to indicate what the file represents, such as 'side 1'",
+                            "type": "string"
+                        },
                         "speed": {
                             "title": "Media Speed",
                             "description": "media speed",
@@ -106,6 +111,13 @@
                         },
 
                         "sound_field": {"$ref": "common.json#/sound_field"},
+
+                        "stylus_size": {
+                            "title": "Stylus Size",
+                            "description": "Size of stylus used for digitization",
+                            "type": "number",
+                            "default": 0
+                        },
 
                         "groove_size": {
                             "title": "Groove Size",

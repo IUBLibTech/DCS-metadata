@@ -191,26 +191,9 @@ YAML and JSON share some properties which make them especially attractive:
   data will read JSON without modification.
 
 Since all are equally machine-usable, human-usablility is a major factor and
-YAML comes out a clear winner.  See Appendix A for tools that can be used to
-manually edit YAML files
+YAML comes out a clear winner. The remainder of this document will use YAML.
 
-The remainder of this document will use YAML.
-
-## Schema Definition
-
-Schemas that can be applied to YAML and JSON data can be defined using JSON
-schema.  The schema is used to validate that the file conforms to what is 
-expected and it can also be used by tools to provide hints for structure,
-valid values, etc.
-
-
-
-
-
-
-
-
-## Appendix A: Manually Editing a YAML Document
+### Manually Editing a YAML Document
 
 One can edit a YAML document in any text editor, but there are some caveats:
 * Indentation is the structure -- so having an editor that indicates the amount
@@ -226,3 +209,230 @@ Everything but schema support is supplied by Visual Studio Code and when the
 RedHat-supplied YAML Language Support extension is installed it gains
 schema support.  Validation errors show up as the document is edited and 
 CTRL+space can be used for auto completion.
+
+For example, with an empty document (except the schema association), the
+skeleton of the file can be populated (with defaults):
+
+![image](docs/schema_autocomplete.png)
+
+and valid values can be expanded with CTRL+space:
+
+![image](docs/valid_values.png)
+
+The red squiggles are visual clues that the there is missing or improperly
+formatted content, and the filename tab will also indicate that the file has
+validation errors.
+
+
+## Schema Definition
+
+Schemas that can be applied to YAML and JSON data can be defined using JSON
+schema.  The schema is used to validate that the file conforms to what is 
+expected and it can also be used by tools to provide hints for structure,
+valid values, etc.
+
+This repository has a sample schema for several A/V
+
+
+-- todo here -- 
+
+
+
+
+## Digitization Workflow Process
+
+NOTE:  Any YAML examples here are based on the schema as it exists at the time
+this was written.  The schemas will change as more details are fleshed out.
+
+
+### The request
+A request for digitization should include information about the intellectual
+object(s) that need to be digitized.  In addition to basic metadata (such as
+title), these things should be present (if possible):
+* Identifiers for the intellectual object, such as IUCAT barcode, catkey,
+  call number, or a locally-scoped identifier (i.e. something off the 
+  spreadsheet)
+* Information about the physical objects which make up the intellectual object
+  including indentification information (such as label text or barcode), and
+  an indication which order multiple objects should be presented.  For example,
+  "the tape labeled '342' should be first, 'a13' should be second".  
+  Additionally, if there are any missing items, they should be identified 
+  ("part 3 is missing")
+* The media to be digitized :)
+
+The example will be a simple one:
+* title: "A beginner's guide to potato hubandry", author: "t. uber"
+* a single audiocassette with a case labeled "potato"
+* call number SB211.P8 B56
+
+
+### Set up a project environment
+Every digitization project will need an ID -- it could be a VA number or some
+other identifier.  We'll use `VZZ9999` as the ID.
+
+The person doing the digitization will create a project directory in whatever
+workspace is assigned.  For an AV digitization, the space is on capybara and
+the directory will be named the same as the identifier.  So the directory is
+also named `VZZ9999`
+
+A skeleton digitization metadata file is copied into the workspace which a
+name that includes the identifier.  The skeleton would be saved as 
+`VZZ9999-project.yaml` and look something like this:
+
+```
+# yaml-language-server: $schema=schemas/core.json
+version: dcs-digitization-workflow-metadata@v1
+project_information:
+  id: 
+  request_date: 
+  completion_date: 
+  contacts:
+    - name: 
+      email: 
+  notes: No Notes
+descriptive_metadata:
+  title: 
+  author: 
+  identifiers:
+    - 
+constituents:
+  - label: 
+    physical_media_description: 
+```
+and filling out the bits from the project request:
+
+```
+# yaml-language-server: $schema=schemas/core.json
+version: dcs-digitization-workflow-metadata@v1
+project_information:
+  id: VZZ9999
+  request_date: 2024-07-16
+  completion_date: 
+  contacts:
+    - name: Brian Wheeler
+      email: bdwheele@iu.edu
+  notes: No Notes
+descriptive_metadata:
+  title: A beginner's guide to potato hubandry
+  author: t. tuber
+  identifiers:
+    - call_number: SB211.P8 B56
+constituents:
+  - label: potato
+    physical_media_description: 
+```
+The completion date remains empty and the label for the first constituent object
+has been set ("potato").
+
+
+### Digitizing the Object
+
+The physical media is an audiocassette, so moving the cursor below the 
+physical_media_description field and indenting, CTRL-space lets us select
+the audiocassette information
+
+![image](docs/audiocassette.png)
+
+Selecting it extends the file appropriately:
+
+```
+# yaml-language-server: $schema=schemas/core.json
+version: dcs-digitization-workflow-metadata@v1
+project_information:
+  id: VZZ9999
+  request_date: 2024-07-16
+  completion_date: 
+  contacts:
+    - name: Brian Wheeler
+      email: bdwheele@iu.edu
+  notes: No Notes
+descriptive_metadata:
+  title: A beginner's guide to potato hubandry
+  author: t. tuber
+  identifiers:
+    - call_number: SB211.P8 B56
+constituents:
+  - label: potato
+    physical_media_description: 
+      media_type: Audiocassette
+      position: 1
+      cassette_type: 
+      tape_type: 
+      tape_stock_brand: 
+      format_duration: 
+      conservation_concerns:
+        pack_deformation: None
+        damaged_tape: false
+        damaged_shell: false
+        fungus: false
+        soft_binder_syndrome: false
+        other_contaminants: false
+        remediation_notes: No Remediation
+      sequences:
+        - id: 
+          tape_speed: "1.875ips"
+          noise_reduction: Unknown
+          sound_field: 
+          duration: 
+          notes: No Notes
+```
+
+There's only one tape, so the position '1' is correct.  The tape overall tape
+information is noted:
+
+```
+    physical_media_description: 
+      media_type: Audiocassette
+      position: 1
+      cassette_type: Compact
+      tape_type: I
+      tape_stock_brand: Scotch
+      format_duration: 90 min
+      conservation_concerns:
+        pack_deformation: None
+        damaged_tape: false
+        damaged_shell: true
+        fungus: false
+        soft_binder_syndrome: false
+        other_contaminants: false
+        remediation_notes: Taped the shell together
+```
+
+The digitization for side 1 is performed using industry-standard tools and 
+settings are noted:
+```
+        - id: side 1
+          tape_speed: "1.875ips"
+          noise_reduction: Unknown
+          sound_field: stereo
+          duration: 22:30
+          notes: Recurring popping on the left channel
+```
+and the media file is named appropriately and put into the project directory.
+
+Side 2 is handled similarly
+
+The digitizer will do any visual/listening QC work to make sure the content is
+what is expected.
+
+Now the digitization is complete and the "completion_date" field is filled out.
+
+TBD:  
+* mapping objects and sequences to filenames, and filename conventions 
+  generally.  Maybe the names are literally specified in the sequence itself?
+* need some place to hang signal chain information
+* need a place to put who did the digitization
+
+### Processing the object
+
+When the digitization is finished the project directory is moved to a processing
+dropbox.
+
+The processing system will look at the project file and:
+* validate the project file, both against the schema and for consistency
+* make sure all the files are there
+* do any format-specific automatic QC for the file formats
+
+
+
+

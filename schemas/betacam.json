@@ -13,7 +13,7 @@
             "media_type": {
                 "title": "Media Type",
                 "description": "Media Type",
-                "const": "VHS"
+                "const": "Betacam"
             },
             "position": {
                 "title": "Position",
@@ -105,8 +105,13 @@
                     "description": "Digitized file",
                     "type": "object",
                     "additionalProperties": false,
-                    "required": ["recording_standard", "image_format", "duration", "notes"],
+                    "required": ["id", "recording_standard", "image_format", "duration", "notes"],
                     "properties": {
+                        "id": {
+                            "title": "Sequence ID",
+                            "description": "Something to indicate what the file represents, such as 'side 1'",
+                            "type": "string"
+                        },
                         "recording_standard": {
                             "title": "Recording Standard",
                             "description": "standard used to record the video",

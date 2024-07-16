@@ -1,0 +1,43 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://dlib.indiana.edu/dcs/test",
+    "title": "Test playground",
+    "description": "A playground",
+    
+    "$defs": {
+        "test1": {
+            "title": "test1",
+            "description": "test1",
+            "type": "object",
+            "required": ["common3", "thing1", "thing2"],
+            "properties": {
+                "common3": {"type": "string"},
+                "thing1": {"type": "string"},
+                "thing2": {"type": "string"}
+            }
+        },
+        "test2": {
+            "title": "test2",
+            "description": "test2",
+            "type": "object",
+            "required": ["common3", "Thing1", "Thing2"],
+            "properties": {
+                "common3": {"type": "string"},
+                "Thing1": {"type": "string"},
+                "Thing2": {"type": "string"}
+            }
+        }        
+    },
+
+    
+    "type": "object",
+    "required": ["common1", "common2"],
+    "properties": {
+        "common1": {"type": "string"},
+        "common2": {"type": "string"}
+    },
+    "oneOf": [
+        {"$ref": "#/$defs/test1"},
+        {"$ref": "#/$defs/test2"}           
+    ]
+}
