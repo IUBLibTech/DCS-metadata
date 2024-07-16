@@ -41,5 +41,7 @@ constituents:
           tape_speed: "1.875ips"
           sound_field: stereo
           duration: 22:45
-          notes: No Notes
+          notes: |
+            Here are some really long notes that I'd like to wrap because they 
+            get quite excessive and I don't know if it will handle it correctly
 
