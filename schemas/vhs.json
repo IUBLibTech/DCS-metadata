@@ -6,9 +6,9 @@
         "title": "VHS",
         "description": "VHS family",
         "type": "object",
-        "additionalProperties": false,
+        
         "required": ["media_type", "position", "format_version", "size", "tape_stock_brand", "format_duration",
-                    "conservation_concerns", "sequences"],
+                    "condition_evaluation", "sequences"],
         "properties": {
             "media_type": {
                 "title": "Media Type",
@@ -49,11 +49,11 @@
                 "description": "Format Duration",
                 "type": "string"
             },
-            "conservation_concerns": {
+            "condition_evaluation": {
                 "title": "Conservation Concerns",
                 "description": "Media evaluation and remediations",
                 "type": "object",
-                "additionalProperties": false,
+                
                 "required": ["pack_deformation", "damaged_tape", "damaged_shell", "fungus", "soft_binder_syndrome", "other_contaminants",
                             "remediation_notes"],
                 "properties": {
@@ -111,7 +111,7 @@
                     "title": "Digitization Sequence",
                     "description": "Digitized file",
                     "type": "object",
-                    "additionalProperties": false,
+                    
                     "required": ["id", "playback_speed", "recording_standard", "image_format", "duration", "notes"],
                     "properties": {
                         "id": {

@@ -4,12 +4,12 @@
     "title": "DCS Digitization Workflow Schema",
     "description": "Digitization Workflow schema for objects scanned by DCS",
     "type": "object",
-    "additonalProperties": false,
     "required": [
         "version",
         "project_information",
         "descriptive_metadata",
-        "constituents"
+        "physical_media",
+        "processing"
     ],
     "properties": {
         "version": {
@@ -18,8 +18,7 @@
         },
         "project_information": {
             "title": "Project Information",
-            "description": "Information about the project to digitize this object",
-            "additionalProperties": false,
+            "description": "Information about the project to digitize this object",            
             "required": ["id", "request_date", "completion_date", "contacts", "notes"],
             "properties": {
                 "id": {
@@ -47,8 +46,7 @@
                     "items": {
                         "title": "Contact Information",
                         "description": "owner contact",
-                        "type": "object",
-                        "additionalProperties": false,
+                        "type": "object",                        
                         "required": ["name", "email"],
                         "properties": {
                             "name": {
@@ -76,10 +74,8 @@
         "descriptive_metadata": {
             "description": "Descriptive Metadata",
             "type": "object",
-            "additionalProperties": false,
             "required": [
-                "title",
-                "author",
+                "title",                
                 "identifiers"
             ],
             "properties": {
@@ -96,7 +92,6 @@
                     "type": "array",
                     "items": {
                         "type": "object",
-                        "additionalProperties": false,
                         "properties": {
                             "iucat_barcode": {
                                 "type": "string",
@@ -113,7 +108,6 @@
                             "local_identifier": {
                                 "description": "A locally-scoped Identifier",
                                 "type": "object",
-                                "additionalProperties": false,
                                 "required": [
                                     "scope",
                                     "identifier"
@@ -134,37 +128,40 @@
                 }
             }
         },
-        "constituents": {
-            "title": "Object Consituents",
-            "description": "physical objects which make up this object",
+        "physical_media": {
+            "title": "Physical Media",
+            "description": "physical media which make up this object",
             "type": "array",
             "minContains": 1,
             "items": {
                 "description": "Physical Object",
                 "type": "object",
-                "additionalProperties": false,
-                "required": [
-                    "label",
-                    "physical_media_description"
-                ],
+                
+                "required": [],
                 "properties": {
                     "label": {
                         "title": "Label Text",
                         "description": "Label/sleeve text or description",
                         "type": "string"
-                    },
-                    "physical_media_description": {
-                        "title": "Physical Media Description",
-                        "description": "Description of the physical media",
-                        "anyOf": [
-                            {"$ref": "analog_sound_disc.json#analog_sound_disc"},
-                            {"$ref": "audiocassette.json#audiocassette"},
-                            {"$ref": "betacam.json#betacam"},
-                            {"$ref": "vhs.json#vhs"},
-                            {"$ref": "missing.json#missing"}
-                        ]           
                     }
-                }
+                },
+                "anyOf": [
+                    {"$ref": "analog_sound_disc.json#analog_sound_disc"},
+                    {"$ref": "audiocassette.json#audiocassette"},
+                    {"$ref": "betacam.json#betacam"},
+                    {"$ref": "vhs.json#vhs"},
+                    {"$ref": "missing.json#missing"}
+                ]           
+                
+                
+            }
+        },
+        "processing": {
+            "title": "Processing Information",
+            "description": "Directives to manage object processing and distribution",
+            "type": "object",
+            "properties": {
+                "derivatives": {"type": "string"}
             }
         }
     }

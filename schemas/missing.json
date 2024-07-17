@@ -5,7 +5,7 @@
         "title": "Missing Object",
         "description": "Placeholder for a missing object",
         "type": "object",
-        "additionalProperties": false,
+        
         "required": ["media_type", "notes"],
         "properties": {
             "media_type": {

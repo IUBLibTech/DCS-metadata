@@ -31,6 +31,36 @@
         "type": "integer",
         "minimum": 1,
         "default": 1
+    },
+    "sequence_base": {
+        "title": "Sequence",
+        "description": "Sequence base fields",
+        "type": "object",
+        "required": ["operator", "physical_id", "duration"],
+        "properties": {
+            "operator": {
+                "title": "Operator ID",
+                "description": "The operator doing the digitization",
+                "type": "string"
+            },
+            "physical_id": {
+                "title": "Physical ID",
+                "description": "Physical identifier for the sequence, such as side number",
+                "type": "string"
+            },
+            "time_offset": {
+                "$ref": "#/duration",
+                "title": "Time Offset",
+                "description": "The time offset where this sequence starts for the physical ID"                
+            },
+            "duration": {
+                "$ref": "#/duration"
+            },
+            "notes": {
+                "title": "Notes",
+                "description": "Notes about the digitization"
+            }
+        }
     }
 
 }

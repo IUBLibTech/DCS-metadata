@@ -7,12 +7,12 @@
         "title": "Analog Sound Disc",
         "description": "Analog sound disc-specific bits for the core schema",
         "type": "object",
-        "additionalProperties": false,
+        
         "required": [
             "media_type",
             "position",
             "diameter", "recording_method", "material", "substrate", "coating",
-            "conservation_concerns",
+            "condition_evaluation",
             "sequences"
         ],
         "properties": {
@@ -58,11 +58,11 @@
                 "default": "n/a"
             }, 
 
-            "conservation_concerns": {
+            "condition_evaluation": {
                 "title": "Conservation Concerns",
                 "description": "Media evaluation and remediations",
                 "type": "object",
-                "additionalProperties": false,
+                
                 "required": ["remediation_notes", "delamination", "exudation", "oxidation", "cracked",
                             "warped", "dirty", "scratched", "worn", "broken", "fungus"],
                 "properties": {
@@ -81,7 +81,40 @@
                         "description": "Notes and actions for remediation of concerns",
                         "type": "string",
                         "default": "No Remediation"
+                    },
+                    "flags": {
+                        "title": "Condition Flags",
+                        "description": "Conditions that the media has",
+                        "type": "array",
+                        "uniqueItems": true,
+                        "minContains": 1,
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "delamination",
+                                "exudation",
+                                "oxidation",
+                                "cracked", 
+                                "scratched",
+                                "warped"
+                            ]
+                        }
+                    },
+                    "scales": {
+                        "title": "Evaluation Scales",
+                        "description":  "Things that use scales",
+                        "type": "object",
+                        
+                        "propertyNames": {
+                            "enum": ["a", "b", "c"]
+                        },
+                        "patternProperties": {
+                            ".": {"type": "integer",
+                                  "minimum": 0,
+                                "maximum": 4}
+                        }
                     }
+
                 }
             },
 
@@ -90,13 +123,15 @@
                 "description": "Sequences digitized",
                 "type": "array",
                 "minContains": 1,
-                "items": {
+                "unevaluatedProperties": false,
+                "items": {"allOf": [
+                {                   
                     "title": "Disc Digitization Sequence",
                     "description": "Digitized file",
                     "type": "object",
-                    "additionalProperties": false,
-                    "required": ["id", "speed", "sound_field", "stylus_size", "groove_size", "groove_orientation", "equalization", "duration", "notes"],
-                    "properties": {
+                    
+                    "required": ["id", "speed", "sound_field", "stylus_size", "groove_size", "groove_orientation", "equalization"],
+                    "properties": {                        
                         "id": {
                             "title": "Sequence ID",
                             "description": "Something to indicate what the file represents, such as 'side 1'",
@@ -137,15 +172,11 @@
                             "enum": ["NAB", "RIAA" ,"Other", "CCIR", "Unknown", "ffrr LP 1953", "NAB+80Hz", "BSI", "Early DECCA", "COLUMBIA", 
                                     "ffrr 1949", "US MID 30", "WESTREX", "FLAT"],
                             "default": "Unknown"
-                        },
-                        "duration": {"$ref": "common.json#/duration"},
-                        "notes": {
-                            "title": "Digitization Notes",
-                            "description": "Notes about the digitization",
-                            "type": "string",
-                            "default": "No Notes"
-                        }
+                        }                        
                     }
+                },
+                {"$ref": "common.json#/sequence_base"}
+                ]
                 }
             }
         }

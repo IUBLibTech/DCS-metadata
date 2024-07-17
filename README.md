@@ -360,7 +360,7 @@ constituents:
       tape_type: 
       tape_stock_brand: 
       format_duration: 
-      conservation_concerns:
+      condition_evaluation:
         pack_deformation: None
         damaged_tape: false
         damaged_shell: false
@@ -388,7 +388,7 @@ information is noted:
       tape_type: I
       tape_stock_brand: Scotch
       format_duration: 90 min
-      conservation_concerns:
+      condition_evaluation:
         pack_deformation: None
         damaged_tape: false
         damaged_shell: true

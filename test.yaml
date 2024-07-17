@@ -1,47 +1,59 @@
 # yaml-language-server: $schema=schemas/core.json
 version: dcs-digitization-workflow-metadata@v1
 project_information:
-  id: VZZ9999
-  request_date: 2024-07-16
+  id: 
+  request_date: 
   completion_date: 
   contacts:
-    - name: Brian Wheeler
-      email: bdwheele@iu.edu
+    - name: 
+      email: 
   notes: No Notes
 descriptive_metadata:
-  title: A beginner's guide to potato hubandry
-  author: t. tuber
+  title: hello world
+  author: 
   identifiers:
-    - call_number: SB211.P8 B56
-constituents:
-  - label: potato
-    physical_media_description: 
-      media_type: Audiocassette
-      position: 1
-      cassette_type: Compact
-      tape_type: I
-      tape_stock_brand: Scotch
-      format_duration: 90 min
-      conservation_concerns:
-        pack_deformation: None
-        damaged_tape: false
-        damaged_shell: true
-        fungus: false
-        soft_binder_syndrome: false
-        other_contaminants: false
-        remediation_notes: Taped the shell together
-      sequences:
-        - id: side 1
-          tape_speed: "1.875ips"
-          noise_reduction: Unknown
-          sound_field: stereo
-          duration: 22:30
-          notes: Recurring popping on the left channel
-        - id: side 2
-          tape_speed: "1.875ips"
-          sound_field: stereo
-          duration: 22:45
-          notes: |
-            Here are some really long notes that I'd like to wrap because they 
-            get quite excessive and I don't know if it will handle it correctly
+    - 
+physical_media:
+  - media_type: LP
+    position: 1
+    diameter: 7
+    recording_method: pressed
+    material: plastic
+    substrate: n/a
+    coating: n/a
+    condition_evaluation:
+      delamination: false
+      exudation: false
+      oxidation: false
+      cracked: false
+      warped: false
+      dirty: false
+      scratched: false
+      worn: false
+      broken: false
+      fungus: false
+      remediation_notes: No Remediation
+      flags:
+        - cracked
+        - delamination
+      scales:
+        
+
+
+
+    sequences:
+      - id: 
+        speed: 
+        sound_field: 
+        stylus_size: 0
+        groove_size: 
+        groove_orientation: 
+        equalization: 
+        operator: 
+        physical_id: 
+        duration: 
+
+processing:
+  derivatives: dasdf
+
 

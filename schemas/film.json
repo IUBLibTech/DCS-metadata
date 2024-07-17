@@ -18,7 +18,7 @@
         "title": "Film-Based Media",
         "description": "Properties specific to film-based media",
         "type": "object",
-        "additionalProperties": false,
+        
         "required": [
             "media_type",
             "media_characteristics",
@@ -30,7 +30,7 @@
             },
             "media_characteristics": {
                 "type": "object",
-                "additionalProperties": false,
+                
                 "required": [
                     "gauge",
                     "footage",
@@ -146,7 +146,7 @@
             },
             "digitization_parameters": {
                 "type": "object",
-                "additionalProperties": false,
+                
                 "required": [
                     "duration",
                     "resolution",                    
@@ -225,7 +225,7 @@
                 "title": "film conservation details",
                 "description": "film conservation details",
                 "type": "object",
-                "additionalProperties": false,
+                
                 "required": [],
                 "properties": {
                     "brittle": {
@@ -367,7 +367,7 @@
             "content_disposition": {
                 "description": "General information about the film content",
                 "type": "object",
-                "additionalProperties": false,
+                
                 "required": [],
                 "properties": {
                     "generation": {
