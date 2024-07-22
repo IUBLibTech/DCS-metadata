@@ -1,0 +1,73 @@
+# yaml-language-server: $schema=schemas/core.json
+version: dcs-digitization-workflow-metadata@v1
+project_information:
+  id: djfglksdjfgljksdfg
+  request_date: 2024-07-18
+  completion_date: 
+  contacts:
+    - name: bdwhelk
+      email: bdwheele@iu.edu
+  notes: No Notes
+descriptive_metadata:
+  title: sdfgsdfgsdfg
+  author: sdgsdfg
+  identifiers:
+    - call_number: sdfgsdfgsdfg
+    - local_identifier:
+        scope: dsgsdfg
+        identifier: sdfgsdfg
+constituents:
+  - label: lp label
+    physical_media_description: 
+      media_type: 
+      position: 1
+      diameter: 7
+      recording_method: 
+      material: 
+      substrate: 
+      coating: 
+      conservation_concerns:
+        delamination: false
+        exudation: false
+        oxidation: false
+        cracked: false
+        warped: false
+        dirty: false
+        scratched: false
+        worn: false
+        broken: false
+        fungus: false
+        remediation_notes: No Remediation
+      sequences:
+        - id: 
+          speed: "33.3"
+          sound_field: 
+          stylus_size: 
+          groove_size: unknown
+          groove_orientation: unknown
+          equalization: Unknown
+          duration: 
+          notes: No Notes       
+  - label: 
+    physical_media_description: 
+      media_type: VHS
+      position: 1
+      format_version: VHS
+      size: Small
+      tape_stock_brand: 
+      format_duration: 
+      conservation_concerns:
+        pack_deformation: None
+        damaged_tape: false
+        damaged_shell: false
+        fungus: false
+        soft_binder_syndrome: false
+        other_contaminants: false
+        remediation_notes: No Remediation
+      sequences:
+        - id: 
+          playback_speed: Standard Play
+          recording_standard: NTSC
+          image_format: "4:3"
+          duration: 
+          notes: No Notes
