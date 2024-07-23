@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=../../../schemas/physical_object.json
+media_type: VHS
+position: 1
+format_version: 
+size: 
+tape_stock_brand: 
+format_duration: 
+conservation_concerns:
+  pack_deformation: None
+  damaged_tape: false
+  damaged_shell: false
+  fungus: false
+  soft_binder_syndrome: false
+  other_contaminants: false
+  remediation_notes: No Remediation
+  

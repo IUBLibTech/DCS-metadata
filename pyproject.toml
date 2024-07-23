@@ -1,0 +1,23 @@
+[project]
+name = "DCS-metadata"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "Brian Wheeler", email = "bdwheele@iu.edu"},
+]
+dependencies = [
+    "jsonschema>=4.23.0",
+    "pyyaml>=6.0.1",
+    "openpyxl>=3.1.5",
+]
+requires-python = ">=3.12"
+readme = "README.md"
+license = {text = "Apache2"}
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[tool.pdm]
+distribution = true

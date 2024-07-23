@@ -1,0 +1,68 @@
+#!/bin/env python
+import activate_venv
+import argparse
+import yaml
+from pathlib import Path
+import sys
+import logging
+import re
+from datetime import datetime
+import getpass
+from schemas import prep_yaml_file, populate_schema_defaults, schema_dir
+from profiles import get_profile
+from openpyxl.reader.excel import load_workbook
+from openpyxl.worksheet.worksheet import Worksheet
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--debug", default=False, action="store_true", help="Turn on debugging")
+    parser.add_argument("profile", help="digitization entity profile")
+    parser.add_argument("spreadsheet", help="Spreadsheet to import")
+    args = parser.parse_args()
+
+    logging.basicConfig(level=logging.DEBUG if args.debug else logging.INFO)
+
+    profile = get_profile(args.profile)
+
+    workbook = load_workbook(args.spreadsheet, read_only=True, data_only=True)    
+    objects = []
+    worksheet: Worksheet = None
+    repeating_keys = {'projectid', 'owner', 'email'}
+    last_repeat = {x: None for x in repeating_keys}
+    for worksheet in workbook.worksheets:
+        print(worksheet.title, worksheet.max_row)
+        # the first row has the column titles -- normalize them and map them to
+        # the column number.
+        keys = {}
+        for c in range(1, worksheet.max_column + 1):
+            x = worksheet.cell(1, c).value
+            if x:
+                keys[c] = normalize_title(x)
+        print(keys)
+        for r in range(2, worksheet.max_row + 1):
+            i = {}
+            for c, name in keys.items():                                
+                v = worksheet.cell(r, c).value
+                i[name] = '' if v is None else v
+ 
+            # fill in any of the repeating columns...
+            for r in repeating_keys:
+                if i[r] == '':
+                    i[r] = objects[-1][r]
+            
+            if i['projectid'] is None or i['projectid'] == '':
+                # fill in any repeating columns from last time
+                pass
+            print(i)
+            objects.append(i)
+
+
+    exit(1)
+
+def normalize_title(text: str):
+    return text.strip().lower().translate({ord(x): None for x in " -_.\"'"})
+    
+
+if __name__ == "__main__":
+    main()
+

@@ -2,7 +2,7 @@
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "$id": "https://dlib.indiana.edu/dcs/schemas/audiocassette",
     
-    "audiocassette": {
+    "audiocassette_physical_object": {
         "title": "Audiocassette",
         "description": "Audiocassette",
         "type": "object",
@@ -101,53 +101,46 @@
                         "default": "No Remediation"
                     }
                 }
+            }
+        }
+    },
+    "audiocassette_sequence": {
+        "title": "Audiocassette Digitization Sequence",
+        "description": "Digitized file",
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "tape_speed", "sound_field", "duration", "notes"],
+        "properties": {
+            "id": {
+                "title": "Sequence ID",
+                "description": "Something to indicate what the file represents, such as 'side 1'",
+                "type": "string"
             },
-            "sequences": {
-                "title": "Digitized Tape Sequences",
-                "description": "Sequences digitized",
-                "type": "array",
-                "minContains": 1,
-                "items": {
-                    "title": "Digitization Sequence",
-                    "description": "Digitized file",
-                    "type": "object",
-                    "additionalProperties": false,
-                    "required": ["id", "tape_speed", "sound_field", "duration", "notes"],
-                    "properties": {
-                        "id": {
-                            "title": "Sequence ID",
-                            "description": "Something to indicate what the file represents, such as 'side 1'",
-                            "type": "string"
-                        },
 
-                        "tape_speed": {
-                            "title": "Tape Speed",
-                            "description": "Recording speed used in inches per second",
-                            "type": "string",
-                            "enum": ["3.75ips", "1.875ips", "0.9375ips", "0.46875ips", "unknown"],
-                            "default": "1.875ips"
-                        },
-                        "noise_reduction": {
-                            "title": "Noise reduction",
-                            "description": "Noise reduction",
-                            "type": "string",
-                            "enum": ["Unknown", "None", "Dolby Unknown", "Dolby B", "Dolby C"],
-                            "default": "Unknown"
-                        },
-                        "sound_field": {"$ref": "common.json#/sound_field"},
-                        "duration": {"$ref": "common.json#/duration"},
-                        "notes": {
-                            "title": "Digitization Notes",
-                            "description": "Notes about the digitization",
-                            "type": "string",
-                            "default": "No Notes"
-                        }
-                    }
-                }
-
-                
-            }       
-
+            "tape_speed": {
+                "title": "Tape Speed",
+                "description": "Recording speed used in inches per second",
+                "type": "string",
+                "enum": ["3.75ips", "1.875ips", "0.9375ips", "0.46875ips", "unknown"],
+                "default": "1.875ips"
+            },
+            "noise_reduction": {
+                "title": "Noise reduction",
+                "description": "Noise reduction",
+                "type": "string",
+                "enum": ["Unknown", "None", "Dolby Unknown", "Dolby B", "Dolby C"],
+                "default": "Unknown"
+            },
+            "sound_field": {"$ref": "common.json#/sound_field"},
+            "duration": {"$ref": "common.json#/duration"},
+            "notes": {
+                "title": "Digitization Notes",
+                "description": "Notes about the digitization",
+                "type": "string",
+                "default": "No Notes"
+            }
         }
     }
-}
+
+    
+}       

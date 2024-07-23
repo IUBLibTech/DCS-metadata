@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../schemas/physical_object.json
+media_type: "45"
+position: 1
+diameter: 7
+recording_method: 
+material: 
+substrate: 
+coating: 
+conservation_concerns:
+  delamination: false
+  exudation: false
+  oxidation: false
+  cracked: false
+  warped: false
+  dirty: false
+  scratched: false
+  worn: false
+  broken: false
+  fungus: false
+  remediation_notes: No Remediation
