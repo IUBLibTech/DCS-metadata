@@ -12,6 +12,7 @@ from schemas import prep_yaml_file, populate_schema_defaults, schema_dir
 from profiles import get_profile
 
 
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--debug", default=False, action="store_true", help="Turn on debugging")

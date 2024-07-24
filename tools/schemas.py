@@ -4,6 +4,7 @@ import sys
 
 schema_dir = Path(sys.path[0], "../schemas")
 
+
 def prep_yaml_file(data, schema_path: Path):
     # generate the basic dump...
     txt = yaml.safe_dump(data, sort_keys=False, default_flow_style=False, 
