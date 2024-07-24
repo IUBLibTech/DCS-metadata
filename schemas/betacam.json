@@ -6,9 +6,21 @@
         "title": "Betacam",
         "description": "Betacam family",
         "type": "object",        
-        "required": ["media_type", "format_version",  "tape_stock_brand", "format_duration",
-                    "conservation_concerns", "sequences"],
+        "required": ["label", "id", "media_type", "format_version",  "tape_stock_brand", "format_duration",
+                    "conservation_concerns", "sequences", "notes"],
         "properties": {
+            "label": {
+                "title": "Tape Label",
+                "description": "Label identifying the tape",
+                "type": "string",
+                "default": "no label"
+            },
+            "id": {
+                "title":  "Identifier",
+                "description": "Identifier (such as a barcode) for the object",
+                "type": "string",
+                "default": "no identifier"
+            },
             "media_type": {
                 "title": "Media Type",
                 "description": "Media Type",
@@ -85,6 +97,12 @@
                         "default": "No Remediation"
                     }
                 }
+            },
+            "notes": {
+                "title": "Physical object notes",
+                "description": "Notes about the physical object",
+                "type": "string",
+                "default": "no notes"
             }
         }
     },

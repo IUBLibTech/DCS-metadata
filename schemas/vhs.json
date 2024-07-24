@@ -7,22 +7,26 @@
         "description": "VHS family",
         "type": "object",
         "additionalProperties": false,
-        "required": ["media_type", "position", "format_version", "size", "tape_stock_brand", "format_duration",
-                    "conservation_concerns", "sequences"],
+        "required": ["label", "id", "media_type", "format_version", "size", "tape_stock_brand", "format_duration",
+                    "conservation_concerns", "notes"],
         "properties": {
             "media_type": {
                 "title": "Media Type",
                 "description": "Media Type",
                 "const": "VHS"
             },
-            "position": {
-                "title": "Position",
-                "description": "Position of the object in the viewing/listening experience",
-                "type": "integer",
-                "minimum": 1,
-                "default": 1
+            "label": {
+                "title": "Tape Label",
+                "description": "Label identifying the tape",
+                "type": "string",
+                "default": "no label"
             },
-
+            "id": {
+                "title":  "Identifier",
+                "description": "Identifier (such as a barcode) for the object",
+                "type": "string",
+                "default": "no identifier"
+            },
             "format_version": {
                 "title": "VHS Format",
                 "description": "Subformat",
@@ -101,6 +105,12 @@
                         "default": "No Remediation"
                     }
                 }
+            },
+            "notes": {
+                "title": "Physical object notes",
+                "description": "Notes about the physical object",
+                "type": "string",
+                "default": "no notes"
             }
         }
     },
