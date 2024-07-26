@@ -1,5 +1,12 @@
-# DCS-workflow metadata thoughts
-Metadata schemas and whatnot to support digitization
+# DWIM - Digitization Workflow Information Manager
+
+Metadata schemas and tools to support digitization workflows
+
+DWIM also means "Do What I Mean" -- this DWIM should try to do what the 
+human operator would do by default.
+
+Discarded name choices included:  "deathworm", "deworm", "dewworm", and "dwalm". 
+
 
 ## HONKING BIG DISCLAIMER
 This is really just a pie-in-the-sky proof of concept / thought experiment
