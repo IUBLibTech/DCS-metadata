@@ -8,8 +8,8 @@ import logging
 import re
 from datetime import datetime
 import getpass
-from schemas import prep_yaml_file, populate_schema_defaults, schema_dir
-from profiles import get_profile
+from dwim.schemas import prep_yaml_file, populate_schema_defaults, schema_dir
+from dwim.profiles import get_profile
 
 
 
