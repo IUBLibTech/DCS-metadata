@@ -2,27 +2,30 @@
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "$id": "https://dlib.indiana.edu/dcs/schemas/betacam",
     
-    "betacam": {
+    "betacam_physical_object": {        
         "title": "Betacam",
         "description": "Betacam family",
-        "type": "object",
-        "additionalProperties": false,
-        "required": ["media_type", "position", "format_version",  "tape_stock_brand", "format_duration",
-                    "conservation_concerns", "sequences"],
+        "type": "object",        
+        "required": ["label", "id", "media_type", "format_version",  "tape_stock_brand", "format_duration",
+                    "conservation_concerns", "sequences", "notes"],
         "properties": {
+            "label": {
+                "title": "Tape Label",
+                "description": "Label identifying the tape",
+                "type": "string",
+                "default": "no label"
+            },
+            "id": {
+                "title":  "Identifier",
+                "description": "Identifier (such as a barcode) for the object",
+                "type": "string",
+                "default": "no identifier"
+            },
             "media_type": {
                 "title": "Media Type",
                 "description": "Media Type",
                 "const": "Betacam"
             },
-            "position": {
-                "title": "Position",
-                "description": "Position of the object in the viewing/listening experience",
-                "type": "integer",
-                "minimum": 1,
-                "default": 1
-            },
-
             "format_version": {
                 "title": "Betacam Format",
                 "description": "Physical format size",
@@ -95,52 +98,49 @@
                     }
                 }
             },
-            "sequences": {
-                "title": "Digitized Betacam Sequences",
-                "description": "Sequences digitized",
-                "type": "array",
-                "minContains": 1,
-                "items": {
-                    "title": "Digitization Sequence",
-                    "description": "Digitized file",
-                    "type": "object",
-                    "additionalProperties": false,
-                    "required": ["id", "recording_standard", "image_format", "duration", "notes"],
-                    "properties": {
-                        "id": {
-                            "title": "Sequence ID",
-                            "description": "Something to indicate what the file represents, such as 'side 1'",
-                            "type": "string"
-                        },
-                        "recording_standard": {
-                            "title": "Recording Standard",
-                            "description": "standard used to record the video",
-                            "type": "string",
-                            "enum": ["NTSC", "PAL", "SECAM", "unknown"],
-                            "default": "NTSC"
-                        },
+            "notes": {
+                "title": "Physical object notes",
+                "description": "Notes about the physical object",
+                "type": "string",
+                "default": "no notes"
+            }
+        }
+    },
+    "betacam_sequence": {
+        "title": "Betacam Digitization Sequence",
+        "description": "Digitized file",
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "recording_standard", "image_format", "duration", "notes"],
+        "properties": {
+            "id": {
+                "title": "Sequence ID",
+                "description": "Something to indicate what the file represents, such as 'side 1'",
+                "type": "string"
+            },
+            "recording_standard": {
+                "title": "Recording Standard",
+                "description": "standard used to record the video",
+                "type": "string",
+                "enum": ["NTSC", "PAL", "SECAM", "unknown"],
+                "default": "NTSC"
+            },
 
-                        "image_format": {
-                            "title": "Image format",
-                            "description": "format of the recorded image",
-                            "type": "string",
-                            "enum": ["4:3", "16:9", "unknown"],
-                            "default": "4:3"
-                        },
-                        
-                        "duration": {"$ref": "common.json#/duration"},
-                        "notes": {
-                            "title": "Digitization Notes",
-                            "description": "Notes about the digitization",
-                            "type": "string",
-                            "default": "No Notes"
-                        }
-                    }
-                }
-
-                
-            }       
-
+            "image_format": {
+                "title": "Image format",
+                "description": "format of the recorded image",
+                "type": "string",
+                "enum": ["4:3", "16:9", "unknown"],
+                "default": "4:3"
+            },
+            
+            "duration": {"$ref": "common.json#/duration"},
+            "notes": {
+                "title": "Digitization Notes",
+                "description": "Notes about the digitization",
+                "type": "string",
+                "default": "No Notes"
+            }
         }
     }
 }

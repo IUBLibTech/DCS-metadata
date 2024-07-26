@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=../../../schemas/sequence_information.json
+id: 
+speed: 
+sound_field: 
+stylus_size: 0
+groove_size: 
+groove_orientation: 
+equalization: 
+duration: 
+notes: No Notes

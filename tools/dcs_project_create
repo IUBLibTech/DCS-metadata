@@ -1,0 +1,53 @@
+#!/bin/env python
+import activate_venv
+import argparse
+import yaml
+from pathlib import Path
+import sys
+import logging
+import re
+from datetime import datetime
+import getpass
+from schemas import prep_yaml_file, populate_schema_defaults, schema_dir
+from profiles import get_profile
+
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--debug", default=False, action="store_true", help="Turn on debugging")
+    parser.add_argument("profile", help="digitization entity profile")
+    parser.add_argument("id", help="ID of the project")
+    args = parser.parse_args()
+
+    logging.basicConfig(level=logging.DEBUG if args.debug else logging.INFO)
+
+    profile = get_profile(args.profile)
+
+    # verify the project id
+    id_pattern = profile['project'].get('id_pattern', None)
+    if id_pattern and not re.match(id_pattern + "$", args.id):
+        logging.error(f"The id {args.id} doesn't match the required pattern {id_pattern}")
+        exit(1)
+
+    # Create the project directory
+    proj_path = Path(Path.cwd(), args.id)
+    if proj_path.exists():
+        logging.error(f"The project directory {proj_path} already exists")
+        exit(1)
+
+    # Start actually creating things.
+    proj_path.mkdir()
+
+    # create the project file.
+    project = populate_schema_defaults(schema_dir / "project.json")
+    project['project_information']['creator'] = getpass.getuser()
+    project['project_information']['create_date'] = datetime.strftime(datetime.now(), "%Y-%m-%d")
+    with open(proj_path / "project.yaml", "w") as f:
+        f.write(prep_yaml_file(project, schema_dir / "project.json"))
+
+
+
+if __name__ == "__main__":
+    main()
+

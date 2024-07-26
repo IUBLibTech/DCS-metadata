@@ -2,27 +2,31 @@
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "$id": "https://dlib.indiana.edu/dcs/schemas/vhs",
     
-    "vhs": {
+    "vhs_physical_object": {
         "title": "VHS",
         "description": "VHS family",
         "type": "object",
         "additionalProperties": false,
-        "required": ["media_type", "position", "format_version", "size", "tape_stock_brand", "format_duration",
-                    "conservation_concerns", "sequences"],
+        "required": ["label", "id", "media_type", "format_version", "size", "tape_stock_brand", "format_duration",
+                    "conservation_concerns", "notes"],
         "properties": {
             "media_type": {
                 "title": "Media Type",
                 "description": "Media Type",
                 "const": "VHS"
             },
-            "position": {
-                "title": "Position",
-                "description": "Position of the object in the viewing/listening experience",
-                "type": "integer",
-                "minimum": 1,
-                "default": 1
+            "label": {
+                "title": "Tape Label",
+                "description": "Label identifying the tape",
+                "type": "string",
+                "default": "no label"
             },
-
+            "id": {
+                "title":  "Identifier",
+                "description": "Identifier (such as a barcode) for the object",
+                "type": "string",
+                "default": "no identifier"
+            },
             "format_version": {
                 "title": "VHS Format",
                 "description": "Subformat",
@@ -102,59 +106,57 @@
                     }
                 }
             },
-            "sequences": {
-                "title": "Digitized VHS Sequences",
-                "description": "Sequences digitized",
-                "type": "array",
-                "minContains": 1,
-                "items": {
-                    "title": "Digitization Sequence",
-                    "description": "Digitized file",
-                    "type": "object",
-                    "additionalProperties": false,
-                    "required": ["id", "playback_speed", "recording_standard", "image_format", "duration", "notes"],
-                    "properties": {
-                        "id": {
-                            "title": "Sequence ID",
-                            "description": "Something to indicate what the file represents, such as 'side 1'",
-                            "type": "string"
-                        },
-                        "playback_speed": {
-                            "title": "Playback Speed",
-                            "description": "Recording speed used",
-                            "type": "string",
-                            "enum": ["Standard Play", "Extended Play", "Long Play", "unknown"],
-                            "default": "Standard Play"
-                        },
-                        "recording_standard": {
-                            "title": "Recording Standard",
-                            "description": "standard used to record the video",
-                            "type": "string",
-                            "enum": ["NTSC", "PAL", "SECAM", "unknown"],
-                            "default": "NTSC"
-                        },
-
-                        "image_format": {
-                            "title": "Image format",
-                            "description": "format of the recorded image",
-                            "type": "string",
-                            "enum": ["4:3", "16:9", "unknown"],
-                            "default": "4:3"
-                        },
-                        
-                        "duration": {"$ref": "common.json#/duration"},
-                        "notes": {
-                            "title": "Digitization Notes",
-                            "description": "Notes about the digitization",
-                            "type": "string",
-                            "default": "No Notes"
-                        }
-                    }
-                }
-
-                
-            }       
-
+            "notes": {
+                "title": "Physical object notes",
+                "description": "Notes about the physical object",
+                "type": "string",
+                "default": "no notes"
+            }
         }
-    }
-}
+    },
+    "vhs_sequence": {
+            
+        "title": "VHS Digitization Sequence",
+        "description": "Digitized file",
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "playback_speed", "recording_standard", "image_format", "duration", "notes"],
+        "properties": {
+            "id": {
+                "title": "Sequence ID",
+                "description": "Something to indicate what the file represents, such as 'side 1'",
+                "type": "string"
+            },
+            "playback_speed": {
+                "title": "Playback Speed",
+                "description": "Recording speed used",
+                "type": "string",
+                "enum": ["Standard Play", "Extended Play", "Long Play", "unknown"],
+                "default": "Standard Play"
+            },
+            "recording_standard": {
+                "title": "Recording Standard",
+                "description": "standard used to record the video",
+                "type": "string",
+                "enum": ["NTSC", "PAL", "SECAM", "unknown"],
+                "default": "NTSC"
+            },
+
+            "image_format": {
+                "title": "Image format",
+                "description": "format of the recorded image",
+                "type": "string",
+                "enum": ["4:3", "16:9", "unknown"],
+                "default": "4:3"
+            },
+            
+            "duration": {"$ref": "common.json#/duration"},
+            "notes": {
+                "title": "Digitization Notes",
+                "description": "Notes about the digitization",
+                "type": "string",
+                "default": "No Notes"
+            }
+        }
+    }    
+}       

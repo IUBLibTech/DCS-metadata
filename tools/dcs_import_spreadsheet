@@ -1,0 +1,126 @@
+#!/bin/env python
+import activate_venv
+import argparse
+import yaml
+from pathlib import Path
+import sys
+import logging
+import re
+from datetime import datetime
+import getpass
+from schemas import prep_yaml_file, populate_schema_defaults, schema_dir
+from profiles import get_profile
+from openpyxl.reader.excel import load_workbook
+from openpyxl.worksheet.worksheet import Worksheet
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--debug", default=False, action="store_true", help="Turn on debugging")
+    parser.add_argument("profile", help="digitization entity profile")
+    parser.add_argument("spreadsheet", help="Spreadsheet to import")
+    args = parser.parse_args()
+
+    logging.basicConfig(level=logging.DEBUG if args.debug else logging.INFO)
+
+    profile = get_profile(args.profile)
+
+    workbook = load_workbook(args.spreadsheet, read_only=True, data_only=True)    
+    rows = []
+    worksheet: Worksheet = None
+    for worksheet in workbook.worksheets:
+        logging.info(f"Processing {worksheet.max_row} rows in worksheet {worksheet.title}")
+
+        # the first row has the column titles -- normalize them and map them to
+        # the column number.
+        keys = {}
+        for c in range(1, worksheet.max_column + 1):
+            x = worksheet.cell(1, c).value
+            if x:
+                keys[c] = normalize_title(x)
+        # grab the data and normalize that
+        for r in range(2, worksheet.max_row + 1):
+            i = {}
+            for c, name in keys.items():                                
+                v = worksheet.cell(r, c).value
+                i[name] = '' if v is None else v
+ 
+            # fill in any of the repeating columns...
+            if i['projectid'] == '':
+                # fill in any per-project repeating columns from the last one
+                for r in {'mco'}:
+                    if r in i and i[r] == '':
+                        i[r] = rows[-1][r]
+
+            for r in {'projectid', 'owner', 'email'}:
+                if i[r] == '':
+                    i[r] = rows[-1][r]
+            rows.append(i)
+        
+        # group the rows into projects.
+        projects = {}
+        last_project = None
+        for row in rows:
+            if row['projectid'] != last_project:
+                # verify the project id
+                id_pattern = profile['project'].get('id_pattern', None)
+                if id_pattern and not re.match(id_pattern + "$", row['projectid']):
+                    logging.error(f"Skipping: The id {row['projectid']} doesn't match the required pattern {id_pattern}")
+                    continue
+
+                # Create the project directory
+                proj_path = Path(Path.cwd(), row['projectid'])
+                if proj_path.exists():
+                    logging.warning(f"Skipping: The project directory {proj_path} already exists")
+                    continue
+
+                # Start actually creating things.
+                proj_path.mkdir()
+
+                # create the project file.
+                project = populate_schema_defaults(schema_dir / "project.json")
+                project['project_information']['creator'] = getpass.getuser()
+                project['project_information']['create_date'] = datetime.strftime(datetime.now(), "%Y-%m-%d")
+                project['project_information']['contacts'] = [{'name': row['owner'], 'email': row['email']}]
+                project['descriptive_metadata']['title'] = row['title']
+                for i in (('callnumber', 'call_number'), ('iucatbarcode', 'iucat_barcode'), ('catkey', 'iucat_catkey')):
+                    if i[0] in row:
+                        project['descriptive_metadata']['identifiers'][i[1]] = row[i[0]]
+                with open(proj_path / "project.yaml", "w") as f:
+                    f.write(prep_yaml_file(project, schema_dir / "project.json"))
+
+                last_project = row['projectid']
+            if row['format'] != '':
+                obj_path: Path = proj_path / str(row['id'])
+                if obj_path.exists():
+                    logging.error(f"SKIPPING physical object {row['id']} in project {last_project}: directory already exists")
+                    continue
+                
+                if not (schema_dir / f"{row['format']}.json").exists():
+                    logging.error(f"SKIPPING physical object {row['id']} in project {last_project}: no schema for media type {row['format']}")
+                    continue
+                obj_path.mkdir()
+                po = populate_schema_defaults(schema_dir / f"{row['format']}.json")
+                po['id'] = row['id']
+                po['label'] = row['title']
+                po['notes'] = row['notes']
+                with open(obj_path / "physical_object.yaml", "w") as f:
+                    f.write(prep_yaml_file(po, schema_dir / f"{row['format']}.json"))
+
+
+
+
+    print(yaml.safe_dump(projects))
+    exit(1)
+
+
+
+
+
+
+def normalize_title(text: str):
+    return text.strip().lower().translate({ord(x): None for x in " -_.\"'"})
+    
+
+if __name__ == "__main__":
+    main()
+

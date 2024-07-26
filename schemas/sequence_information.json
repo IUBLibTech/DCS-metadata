@@ -1,0 +1,10 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://dlib.indiana.edu/dcs/schemas/sequence_information",
+    "anyOf": [
+        {"$ref": "betacam.json#/betacam_sequence"},
+        {"$ref": "analog_sound_disc.json#/analog_sound_disc_sequence"},
+        {"$ref": "audiocassette.json#/audiocassette_sequence"},
+        {"$ref": "vhs.json#/vhs_sequence"}
+    ]
+}

@@ -1,0 +1,10 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://dlib.indiana.edu/dcs/schemas/physical_object",    
+    "anyOf": [
+        {"$ref": "betacam.json#/betacam_physical_object"},
+        {"$ref": "analog_sound_disc.json#/analog_sound_disc_physical_object"},
+        {"$ref": "audiocassette.json#/audiocassette_physical_object"},
+        {"$ref": "vhs.json#/vhs_physical_object"}
+    ]
+}

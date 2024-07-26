@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=../../schemas/project.json
+version: dcs-digitization-workflow-metadata@v1
+project_information:
+  id: 
+  request_date: 
+  completion_date: 
+  contacts:
+    - name: 
+      email: 
+  notes: No Notes
+descriptive_metadata:
+  title: 
+  identifiers:
+    - 

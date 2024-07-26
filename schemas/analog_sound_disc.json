@@ -2,19 +2,18 @@
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "$id": "https://dlib.indiana.edu/dcs/schemas/analog_sound_disc",
     
-    "analog_sound_disc": {
+    "analog_sound_disc_physical_object": {
     
         "title": "Analog Sound Disc",
         "description": "Analog sound disc-specific bits for the core schema",
         "type": "object",
-        "additionalProperties": false,
         "required": [
             "media_type",
-            "position",
             "diameter", "recording_method", "material", "substrate", "coating",
             "conservation_concerns",
             "sequences"
         ],
+        "additionalProperties": false,
         "properties": {
             "media_type": {
                 "title": "Media Type",
@@ -22,9 +21,6 @@
                 "type": "string",
                 "enum": ["45", "78", "Aluminum Disc", "Lacquer Disc", "LP", "Other Analog Sound Disc"],
                 "default": "unspecified"
-            },
-            "position": {
-                "$ref": "common.json#/position"
             },
             "diameter": {
                 "title": "Disc Diameter",
@@ -83,70 +79,63 @@
                         "default": "No Remediation"
                     }
                 }
+            }
+        }
+    },
+    "analog_sound_disc_sequence": {
+        "title": "Analog Sound Disc Digitization Sequence",
+        "description": "Digitized file",
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "speed", "sound_field", "stylus_size", "groove_size", "groove_orientation", "equalization", "duration", "notes"],
+        "properties": {
+            "id": {
+                "title": "Sequence ID",
+                "description": "Something to indicate what the file represents, such as 'side 1'",
+                "type": "string"
+            },
+            "speed": {
+                "title": "Media Speed",
+                "description": "media speed",
+                "type": "string",
+                "enum": ["33.3", "45", "78", "Unknown", "Mixed"],
+                "default": "33.3"
             },
 
-            "sequences": {
-                "title": "Digitized Disc Sequences",
-                "description": "Sequences digitized",
-                "type": "array",
-                "minContains": 1,
-                "items": {
-                    "title": "Disc Digitization Sequence",
-                    "description": "Digitized file",
-                    "type": "object",
-                    "additionalProperties": false,
-                    "required": ["id", "speed", "sound_field", "stylus_size", "groove_size", "groove_orientation", "equalization", "duration", "notes"],
-                    "properties": {
-                        "id": {
-                            "title": "Sequence ID",
-                            "description": "Something to indicate what the file represents, such as 'side 1'",
-                            "type": "string"
-                        },
-                        "speed": {
-                            "title": "Media Speed",
-                            "description": "media speed",
-                            "type": "string",
-                            "enum": ["33.3", "45", "78", "Unknown", "Mixed"],
-                            "default": "33.3"
-                        },
+            "sound_field": {"$ref": "common.json#/sound_field"},
 
-                        "sound_field": {"$ref": "common.json#/sound_field"},
+            "stylus_size": {
+                "title": "Stylus Size",
+                "description": "Size of stylus used for digitization",
+                "type": "number",
+                "default": 0
+            },
 
-                        "stylus_size": {
-                            "title": "Stylus Size",
-                            "description": "Size of stylus used for digitization",
-                            "type": "number",
-                            "default": 0
-                        },
-
-                        "groove_size": {
-                            "title": "Groove Size",
-                            "type": "string",
-                            "enum": ["micro", "coarse", "unknown"],
-                            "default": "unknown"
-                        },
-                        "groove_orientation": {
-                            "title": "Groove Orientation",
-                            "type": "string",
-                            "enum": ["lateral", "vertical", "unknown"],
-                            "default": "unknown"
-                        },
-                        "equalization": {
-                            "title": "Equalization",
-                            "type": "string",
-                            "enum": ["NAB", "RIAA" ,"Other", "CCIR", "Unknown", "ffrr LP 1953", "NAB+80Hz", "BSI", "Early DECCA", "COLUMBIA", 
-                                    "ffrr 1949", "US MID 30", "WESTREX", "FLAT"],
-                            "default": "Unknown"
-                        },
-                        "duration": {"$ref": "common.json#/duration"},
-                        "notes": {
-                            "title": "Digitization Notes",
-                            "description": "Notes about the digitization",
-                            "type": "string",
-                            "default": "No Notes"
-                        }
-                    }
-                }
+            "groove_size": {
+                "title": "Groove Size",
+                "type": "string",
+                "enum": ["micro", "coarse", "unknown"],
+                "default": "unknown"
+            },
+            "groove_orientation": {
+                "title": "Groove Orientation",
+                "type": "string",
+                "enum": ["lateral", "vertical", "unknown"],
+                "default": "unknown"
+            },
+            "equalization": {
+                "title": "Equalization",
+                "type": "string",
+                "enum": ["NAB", "RIAA" ,"Other", "CCIR", "Unknown", "ffrr LP 1953", "NAB+80Hz", "BSI", "Early DECCA", "COLUMBIA", 
+                        "ffrr 1949", "US MID 30", "WESTREX", "FLAT"],
+                "default": "Unknown"
+            },
+            "duration": {"$ref": "common.json#/duration"},
+            "notes": {
+                "title": "Digitization Notes",
+                "description": "Notes about the digitization",
+                "type": "string",
+                "default": "No Notes"
             }
         }
     }
