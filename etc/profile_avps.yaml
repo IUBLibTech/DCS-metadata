@@ -1,0 +1,43 @@
+name: avps
+
+physical_objects:
+  default:
+    id_pattern: "AVPS_{barcode:14s}"
+    id_validators:
+      barcode: [luhn]    
+    uses: {}
+
+  # generic templates...
+  _audio:
+    uses:
+      pres:
+        pattern: AVPS_{barcode:14s}_{sequence:02d}_pres.wav
+        has_metadata: true
+      prod: 
+        pattern: AVPS_{barcode:14s}_{sequence:02d}_prod.wav
+
+
+    sequence_count: 2      
+
+  _video:
+    sequence_count: 1
+
+  # real datatypes
+  audiocassette:
+    isa: [_audio]
+    media_defaults:
+      cassette_type: compact-blah-blah-blah
+      foo: hello
+      xfoo.bar[0].three: thingy
+      conservation_concerns.pack_deformation: Severe
+
+    sequence_defaults:
+      playback_speed: 1.875 ips
+      sound_field: stereo
+      noise_reduction: none
+
+  open_reel_audio:
+    isa: [_audio]
+    sequence_defaults:
+      track_configuration: stereo
+      sound_field: stereo

@@ -7,6 +7,10 @@ name = "pypi"
 jsonschema = "*"
 pyyaml = "*"
 openpyxl = "*"
+pydantic = "*"
+mergedeep = "*"
+luhn = "*"
+jsonpath-ng = "*"
 
 [dev-packages]
 

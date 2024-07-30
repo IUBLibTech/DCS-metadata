@@ -1,0 +1,6 @@
+name: default
+
+project:
+  id_pattern: "{id}"
+  json_schema: project
+

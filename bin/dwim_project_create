@@ -8,10 +8,10 @@ import logging
 import re
 from datetime import datetime
 import getpass
-from dwim.schemas import prep_yaml_file, populate_schema_defaults, schema_dir
-from dwim.profiles import get_profile
-
-
+from dwim.schemas import Schema
+from dwim.profiles import load_profile
+from dwim.config import load_config
+from dwim.project import Project
 
 def main():
     parser = argparse.ArgumentParser()
@@ -22,29 +22,21 @@ def main():
 
     logging.basicConfig(level=logging.DEBUG if args.debug else logging.INFO)
 
-    profile = get_profile(args.profile)
-
-    # verify the project id
-    id_pattern = profile['project'].get('id_pattern', None)
-    if id_pattern and not re.match(id_pattern + "$", args.id):
-        logging.error(f"The id {args.id} doesn't match the required pattern {id_pattern}")
+    profile = load_profile(args.profile)
+    config = load_config()
+    
+    try: 
+        Project(Path(config.project_root), args.id, profile)
+        logging.error("Project already exists!")
         exit(1)
+    except FileNotFoundError:
+        # if the project isn't found, that's actually a good thing.
+        pass
 
-    # Create the project directory
-    proj_path = Path(Path.cwd(), args.id)
-    if proj_path.exists():
-        logging.error(f"The project directory {proj_path} already exists")
-        exit(1)
+    project = Project(Path(config.project_root), args.id, profile, create=True)
 
-    # Start actually creating things.
-    proj_path.mkdir()
+    logging.info(f"Project {project.name} has been created at {project.project_root}")
 
-    # create the project file.
-    project = populate_schema_defaults(schema_dir / "project.json")
-    project['project_information']['creator'] = getpass.getuser()
-    project['project_information']['create_date'] = datetime.strftime(datetime.now(), "%Y-%m-%d")
-    with open(proj_path / "project.yaml", "w") as f:
-        f.write(prep_yaml_file(project, schema_dir / "project.json"))
 
 
 
