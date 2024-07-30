@@ -8,34 +8,29 @@ import logging
 import re
 from datetime import datetime
 import getpass
-from dwim.schemas import Schema
 from dwim.profiles import load_profile
 from dwim.config import load_config
 from dwim.project import Project
 
+
 def main():
-    parser = argparse.ArgumentParser(description="Create a new project in this directory")
+    exit(1) # TODO
+    parser = argparse.ArgumentParser()
     parser.add_argument("--debug", default=False, action="store_true", help="Turn on debugging")
     parser.add_argument("profile", help="digitization entity profile")
-    parser.add_argument("id", help="ID of the project")
+    parser.add_argument("id", help="t")
+    parser.add_argument("type", help="Type of physical object")
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.DEBUG if args.debug else logging.INFO)
 
-    profile = load_profile(args.profile)
     config = load_config()
-    
-    try: 
-        Project(Path(config.project_root), args.id, profile)
-        logging.error("Project already exists!")
-        exit(1)
-    except FileNotFoundError:
-        # if the project isn't found, that's actually a good thing.
-        pass
+    profile = load_profile(args.profile)
 
-    project = Project(Path(config.project_root), args.id, profile, create=True)
+    # the assumption is that the project is the current directory.
+    project = Project(Path.cwd().parent, Path.cwd().name, profile)
 
-    logging.info(f"Project {project.name} has been created at {project.project_root}")
+    project.add_physical_object(args.id, args.type)
 
 
 

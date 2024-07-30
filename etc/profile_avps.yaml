@@ -13,8 +13,14 @@ physical_objects:
       pres:
         pattern: AVPS_{barcode:14s}_{sequence:02d}_pres.wav
         has_metadata: true
+                
       prod: 
         pattern: AVPS_{barcode:14s}_{sequence:02d}_prod.wav
+
+      presInt:
+        pattern: AVPS_{barcode:14s}_{sequence:02d}_presInt.wav
+        optional: true
+        
 
 
     sequence_count: 2      

@@ -87,12 +87,9 @@ def validate_id(the_id: str, id_pattern: str, id_validators: dict, exact=False) 
         raise ValueError(f"ID Match for '{the_id}' fails for pattern '{id_pattern}'")
     
 
-
-
 if __name__ == "__main__":    
     regex, fields = format_string_to_regex("MDPI_{barcode:14d}_{sequence:02d}_{use:s}.mp4", strmatch='*')
     print(regex, fields)
     m = re.match(regex, "MDPI_40000001229337_01_high_20160204_083240.mp4")
     print(m, m.groupdict())
 
-    #print(format_string_to_regex("AVPS_{barcode:14d}_{sequence:02d}_{use}"))

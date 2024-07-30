@@ -45,7 +45,6 @@ class Project:
         if (po_path).exists():
             raise FileExistsError(f"Physical object with ID {physical_id} already exists")
         
-        po_path.mkdir()
         # get the configuration and validate the 
         config = self.profile.get_po_config(physical_type)        
         id_fields = validate_id(physical_id, config.id_pattern, config.id_validators, exact=True)
@@ -55,23 +54,40 @@ class Project:
         media = schema.create_skeleton()
         media = schema.apply_defaults(media, config.media_defaults)
  
+        po_path.mkdir()
         with open(po_path / "physical_object.yaml", "w") as f:
             f.write(schema.get_yaml_text(media))
-
-        if config.sequence_count:
-            # create sequence data stubs
-            schema = Schema(f"media/{physical_type}-sequence")
-            for s in range(1, config.sequence_count + 1):
-                for use, usedata in config.uses.items():
-                    # create media stub file
-                    (po_path / usedata.pattern.format(**id_fields, sequence=s)).touch()
-                    #  create metadata if it's specified.
-                    if usedata.has_metadata:                    
-                        seq_meta = schema.create_skeleton()
-                        seq_meta = schema.apply_defaults(seq_meta, {'sequence': s, **config.sequence_defaults})
-                        with open(po_path / ((usedata.pattern.format(**id_fields, sequence=s)) + ".yaml"), "w") as f:
-                            f.write(schema.get_yaml_text(seq_meta))
         
+        if config.sequence_count:
+            # create sequence stubs
+            for s in range(1, config.sequence_count + 1):
+                self.add_sequence(physical_id, physical_type, s)
 
 
 
+    def add_sequence(self, physical_id, physical_type, seqno):
+        po_path: Path = self.project_root / physical_id
+        if not po_path.exists():
+            raise FileNotFoundError(f"Physical object with ID {physical_id} doesn't exist")
+        config = self.profile.get_po_config(physical_type)        
+        id_fields = validate_id(physical_id, config.id_pattern, config.id_validators, exact=True)
+
+        # create sequence data stubs
+        schema = Schema(f"media/{physical_type}-sequence")
+        
+        for use, usedata in config.uses.items():
+            if usedata.optional:
+                continue
+            
+            # create media stub file
+            (po_path / usedata.pattern.format(**id_fields, sequence=seqno)).touch()
+            #  create metadata if it's specified.
+            if usedata.has_metadata:
+                mdfile = po_path / ((usedata.pattern.format(**id_fields, sequence=seqno)) + ".yaml")
+                if mdfile.exists():
+                    logging.warn(f"Not overwriting {mdfile} when creating sequence")
+                    continue
+                seq_meta = schema.create_skeleton()
+                seq_meta = schema.apply_defaults(seq_meta, {'sequence': seqno, **config.sequence_defaults})
+                with open(mdfile, "w") as f:
+                    f.write(schema.get_yaml_text(seq_meta))

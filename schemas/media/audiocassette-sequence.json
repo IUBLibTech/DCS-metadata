@@ -1,6 +1,6 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://dlib.indiana.edu/dcs/schemas/audiocassette",
+    "$id": "https://dlib.indiana.edu/dcs/schemas/media/audiocassette-sequence",
 
 
     "title": "Audiocassette Digitization Sequence",

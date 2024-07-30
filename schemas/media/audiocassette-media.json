@@ -2,7 +2,6 @@
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "$id": "https://dlib.indiana.edu/dcs/schemas/media/audiocassette-media",
     
-    
     "title": "Audiocassette",
     "description": "Audiocassette",
     "type": "object",
@@ -13,7 +12,7 @@
         "media_type": {
             "title": "Media Type",
             "description": "Media Type",
-            "const": "Audiocassette"
+            "const": "audiocassette"
         },
         "label": {
             "title": "Tape Label",

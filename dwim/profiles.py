@@ -14,11 +14,6 @@ class ProjectConfig(BaseModel):
     json_schema: str = "project.json"
 
 
-
-
-
-
-
 class PhysicalConfig(BaseModel):
     id_pattern: str = "{id}"
     id_validators: dict[str, list] = Field(default_factory=dict)
@@ -29,11 +24,10 @@ class PhysicalConfig(BaseModel):
     uses: dict[str, "UseConfig"] = Field(default_factory=dict)
     
     
-
 class UseConfig(BaseModel):
     pattern: str
     has_metadata: bool = False
-    
+    optional: bool = False
 
 
 class Profile(BaseModel):
@@ -56,9 +50,7 @@ class Profile(BaseModel):
                 raise ValueError(f"The parent physical object type {x} isn't defined!")
             merge(config, self.physical_objects[x])
 
-        print(config)
         return PhysicalConfig(**config)
-
 
 
 def load_profile(name: str):

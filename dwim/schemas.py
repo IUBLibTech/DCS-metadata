@@ -8,7 +8,6 @@ import logging
 
 schema_dir: Path = Path(sys.path[0], "../schemas")
 
-
 class Schema:
     "JSON Schema Management Stuff"
     def __init__(self, name: str):
@@ -24,6 +23,7 @@ class Schema:
     def create_skeleton(self):
         """Create a data structure that uses the schema defaults"""
         return self._create_skeleton(self.schema)
+    
 
     def _create_skeleton(self, schema):
         if 'const' in schema:
@@ -66,7 +66,6 @@ class Schema:
             if errs:
                 raise ValueError(f"Data doesn't validate after applying these defaults: {defaults}: \n  *" + "\n  *".join(errs))
 
-        
         return data
 
 
@@ -99,5 +98,4 @@ class Schema:
         for x in ('null', 'true', 'false'):
             txt = txt.replace(f"'{x}'", x)
         
-
         return txt
