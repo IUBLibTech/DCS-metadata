@@ -8,7 +8,7 @@ from pydantic import BaseModel, Field
 class Config(BaseModel):
     """Configuration for DWIM Tools"""
     schema_base: str
-    project_root: str
+    #project_root: str
 
 
 def load_config():

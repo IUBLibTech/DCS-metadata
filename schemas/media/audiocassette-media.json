@@ -1,116 +1,127 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://dlib.indiana.edu/dcs/schemas/media/audiocassette-media",
+    "$id": "https://dlib.indiana.edu/dwim/schemas/media/audiocassette-media@v1",
     
     "title": "Audiocassette",
     "description": "Audiocassette",
     "type": "object",
     "additionalProperties": false,
-    "required": ["label", "id", "media_type", "cassette_type", "tape_type", "tape_stock_brand", "format_duration",
-                "conservation_concerns", "notes"],
+    "required": ["schema_id", "profile", "identification", "media_type", "title", "barcode", 
+                 "digitizer", "digitization_date",
+                 "physical_details", "problems"],
     "properties": {
+        "schema_id": {
+            "const": "media/audiocassette-media@v1"
+        },
+        "identification": {
+            "title": "Identification",
+            "identification": "Identification information to provide context",
+            "type": "object",
+            "properties": {    
+                "project_id": {
+                    "title": "Project ID",
+                    "description": "The unique ID that represents this project",
+                    "type": "string"
+                },
+                "physical_object_id": {
+                    "title": "Physical Object ID",
+                    "description": "The ID for the physical object that this describes",
+                    "type": "string"
+                }
+            }
+        },
         "media_type": {
             "title": "Media Type",
             "description": "Media Type",
             "const": "audiocassette"
         },
-        "label": {
-            "title": "Tape Label",
-            "description": "Label identifying the tape",
-            "type": "string",
-            "default": "no label"
+        "title": {
+            "title": "Title",
+            "description": "Title of the physical media if it differs from the project",
+            "type": "string",            
+            "default": "SAME"
         },
-        "id": {
+        "barcode": {
             "title":  "Identifier",
             "description": "Identifier (such as a barcode) for the object",
             "type": "string",
             "default": "no identifier"
         },
-        "cassette_type": {
-            "title": "Type of cassette",
-            "description": "Type of cassette",
-            "type": "string",
-            "enum": ["Compact", "Micro", "Mini"],
-            "default": "Compact"
-        },
-
-        "tape_type": {
-            "title": "Type of tape",
-            "description": "Type of tape",
-            "type": "string",
-            "enum": ["Unknown", "I", "II", "III", "IV"],
-            "default": "Unknown"
-
-        },
-        "tape_stock_brand": {
-            "title": "Tape stock brand",
-            "description": "Tape stock brand",
+        "digitizer": {
+            "title": "Digitizer",
+            "description": "username of the person doing the digitization",
             "type": "string"
         },
-
-        "format_duration": {
-            "title": "Format duration",
-            "description": "Format Duration",
-            "type": "string"
+        "digitization_date": {
+            "title": "Digitization Date",
+            "description":  "Date the object was digitized",
+            "type": "string",
+            "format": "date"
         },
-        "conservation_concerns": {
-            "title": "Conservation Concerns",
-            "description": "Media evaluation and remediations",
+        "physical_details": {
+            "title": "Physical Details",
+            "description": "Details about the physical media",
             "type": "object",
             "additionalProperties": false,
-            "required": ["pack_deformation", "damaged_tape", "damaged_shell", "fungus", "soft_binder_syndrome", "other_contaminants",
-                        "remediation_notes"],
+            "required": ["tape_brand", "format_duration", "cassette_type", "tape_type", "comments"],
             "properties": {
-                "pack_deformation": {
-                    "title": "Pack deformation",
+                "tape_brand": {
+                    "title": "Tape brand",
+                    "description": "Brand/manufacturer of the tape",
+                    "type": "string"
+                },
+                "format_duration": {
+                    "title": "Format duration",
+                    "description": "The nominal duration of the media",
+                    "type": "string"
+                },        
+                "cassette_type": {
+                    "title": "Cassette Type",
                     "description": "Type of cassette",
+                    "enum": ["compact", "micro", "mini"],
+                    "default": "compact"
+                },
+                "tape_type": {
+                    "title": "Tape Type",
+                    "description": "Type of tape media",
                     "type": "string",
-                    "enum": ["None", "Minor", "Moderate", "Severe"],
-                    "default": "None"
+                    "enum": ["unknown", "I", "II", "III", "IV"],
+                    "default": "unknown"
                 },
-                "damaged_tape": {
-                    "title": "Tape damaged",
-                    "description": "the tape is damaged",
-                    "type": "boolean",
-                    "default": "false"
-                },
-                "damaged_shell": {
-                    "title": "Shell damaged",
-                    "description": "the tape shell is damaged",
-                    "type": "boolean",
-                    "default": "false"
-                },
-                "fungus": {
-                    "title": "Fungus",
-                    "description": "the tape has a fungus",
-                    "type": "boolean",
-                    "default": "false"
-                },
-                "soft_binder_syndrome": {
-                    "title": "Soft binder syndrome",
-                    "description": "the tape has a soft binder",
-                    "type": "boolean",
-                    "default": "false"
-                },
-                "other_contaminants": {
-                    "title": "Other Contaminants",
-                    "description": "the tape has other contaminants",
-                    "type": "boolean",
-                    "default": "false"
-                },
-                "remediation_notes": {
-                    "title": "Remediation Notes",
-                    "description": "Notes and actions for remediation of concerns",
+                "comments": {
+                    "title": "Comments",
+                    "description": "Comments noting anything unusual about the media",
                     "type": "string",
-                    "default": "No Remediation"
+                    "default": "no comment"           
                 }
             }
         },
-        "notes": {
-            "title": "Physical object notes",
-            "description": "Notes about the physical object",
-            "type": "string",
-            "default": "no notes"
+        "problems": {
+            "title": "Problems",
+            "description": "Problems with the physical media that may impair capture",
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["pack_deformation", "preservation_problems", "structural_damage"],
+            "properties": {
+                "pack_deformation": {
+                    "title": "Pack Deformation",
+                    "description": "Details of the tape packing deformation",
+                    "type": "string",
+                    "default": "n/a"
+                },
+                "preservation_problems": {
+                    "title": "Preservation Problems",
+                    "description": "Details of preservation problems with the media",
+                    "type": "string",
+                    "default": "n/a"
+                },
+                "structural_damage": {
+                    "title": "Structural Damage",
+                    "description": "Details of any structural damage to the media",
+                    "type": "string",
+                    "default": "n/a"
+                }
+            }
         }
     }
 }       

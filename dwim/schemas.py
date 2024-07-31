@@ -28,7 +28,7 @@ class Schema:
     def _create_skeleton(self, schema):
         if 'const' in schema:
             return schema['const']
-        match schema.get('type', 'object'):
+        match schema.get('type', None):
             case 'object':
                 d = {}
                 for k in schema.get('required', []):
@@ -43,8 +43,11 @@ class Schema:
             case 'integer' | 'float' | 'string' | 'boolean':
                 return schema.get('default', '__UNSET__')
             case _:
-                # this is a type we can't handle.  Just return None?
-                return None
+                if 'enum' in schema:
+                    return schema.get('default', schema['enum'][0])
+                else:
+                    # this is a type we can't handle.  Just return None?
+                    return None
         return d
 
 

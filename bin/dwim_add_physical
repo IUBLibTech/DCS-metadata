@@ -1,15 +1,9 @@
 #!/bin/env python
 import activate_venv
 import argparse
-import yaml
 from pathlib import Path
-import sys
 import logging
-import re
-from datetime import datetime
-import getpass
 from dwim.profiles import load_profile
-from dwim.config import load_config
 from dwim.project import Project
 
 
@@ -23,15 +17,11 @@ def main():
 
     logging.basicConfig(level=logging.DEBUG if args.debug else logging.INFO)
 
-    config = load_config()
     profile = load_profile(args.profile)
 
     # the assumption is that the project is the current directory.
     project = Project(Path.cwd().parent, Path.cwd().name, profile)
-
-    project.add_physical_object(args.id, args.type)
-
-
+    project.add_physical_object(profile, args.id, args.type, defaults={}, seq_defaults={})
 
 
 if __name__ == "__main__":

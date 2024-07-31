@@ -1,33 +1,45 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://dlib.indiana.edu/dcs/schemas/project",
-    "title": "DCS Digitization Workflow Schema",
-    "description": "Digitization Workflow schema for objects scanned by DCS",
+    "$id": "https://dlib.indiana.edu/dwim/schemas/project@v1",
+    "title": "DWIM Project",
+    "description": "Digitization Workflow Information Manager Project",
     "type": "object",
-    "required": [
-        "version",
-        "project_information",
-        "descriptive_metadata"
-    ],
+    "required": ["schema_id", "identification", "project_information", "descriptive_metadata"],
     "properties": {
-        "version": {
-            "const": "dcs-digitization-workflow-metadata@v1",
-            "description": "Digitization Workflow schema version"
+        "schema_id": {
+            "const": "project@v1"            
+        },
+        "identification": {
+            "title": "Identification",
+            "identification": "Identification information to provide context",
+            "type": "object",
+            "properties": {    
+                "project_id": {
+                    "title": "Project ID",
+                    "description": "The unique ID that represents this project",
+                    "type": "string"
+                }
+            }
         },
         "project_information": {
             "title": "Project Information",
             "description": "Information about the project to digitize this object",
             "additionalProperties": false,
-            "required": ["creator", "create_date", "completion_date", "contacts", "notes"],
+            "required": ["creator", "creator_name", "create_date", "completion_date", "contacts", "comments"],
             "properties": {
                 "creator": {
-                    "title": "Project Creator",
+                    "title": "Project Creator Username",
                     "description": "User that created the project",
                     "type": "string"
                 },
+                "creator_name": {
+                    "title": "Project Creator Name",
+                    "description": "Name of user that created the project",
+                    "type": "string"
+                },
                 "create_date": {
-                    "title": "Request Date",
-                    "description": "Date the digitization was requested",
+                    "title": "Create Date",
+                    "description": "Date the project was created",
                     "type": "string",
                     "format": "date"
                 },
@@ -63,11 +75,11 @@
                         }
                     }
                 },
-                "notes": {
-                    "title": "Project Notes",
-                    "description": "Notes about the project",
+                "comments": {
+                    "title": "Project Comments",
+                    "description": "Comments about the project",
                     "type": "string",
-                    "default": "No Notes"
+                    "default": "no comment"
                 }
             }
         },
@@ -91,19 +103,19 @@
                     "additionalProperties": false,
                     "properties": {
                         "iucat_barcode": {
-                            "type": ["string", "null"],
+                            "type": "string",
                             "description": "IUcat Barcode",
-                            "default": "null"
+                            "default": "n/a"
                         },
                         "iucat_catkey": {
-                            "type": ["string", "null"],
+                            "type": "string",
                             "description": "Catalog Key",
-                            "default": "null"
+                            "default": "n/a"
                         },
                         "call_number": {
-                            "type": ["string", "null"],
+                            "type": "string",
                             "description": "Call Number",
-                            "default": "null"
+                            "default": "n/a"
                         },
                         "other_identifiers": {
                             "title": "Other Identifiers",

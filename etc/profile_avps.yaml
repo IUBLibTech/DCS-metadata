@@ -31,16 +31,8 @@ physical_objects:
   # real datatypes
   audiocassette:
     isa: [_audio]
-    media_defaults:
-      cassette_type: compact-blah-blah-blah
-      foo: hello
-      xfoo.bar[0].three: thingy
-      conservation_concerns.pack_deformation: Severe
-
-    sequence_defaults:
-      playback_speed: 1.875 ips
-      sound_field: stereo
-      noise_reduction: none
+    media_defaults: {}
+    sequence_defaults: {}
 
   open_reel_audio:
     isa: [_audio]

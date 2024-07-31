@@ -1,44 +1,89 @@
 #!/bin/env python
 import activate_venv
 import argparse
-import yaml
 from pathlib import Path
-import sys
 import logging
-import re
-from datetime import datetime
 import getpass
-from dwim.schemas import Schema
-from dwim.profiles import load_profile
-from dwim.config import load_config
+from datetime import datetime
+import pwd
+
 from dwim.project import Project
 
 def main():
+    metadata = {
+        'creator': ["Project Creator Username", 'project_information.creator', getpass.getuser()],
+        'creator_name': ["Project Creator Name", 'project_information.creator_name', pwd.getpwnam(getpass.getuser()).pw_name],
+        'create_date': ["Project Creation time", 'project_information.create_date', datetime.strftime(datetime.now(), "%Y-%m-%d")],
+        'completion_date': ["Project Complection date", 'project_information.create_date', None],
+        'contacts': ["Project Contacts (in name:email format)", "project_information.contacts", handle_contacts, True],
+        'notes': ["Project Notes", "project_information.notes", None],
+        "title": ["Project Title", "descriptive_metadata.title", None],
+        "iucat_barcode": ["IUCAT Barcode", "descriptive_metadata.identifiers.iucat_barcode", None],
+        "iucat_catkey": ["IUCAT Catalog Key", "descriptive_metadata.identifiers.iucat_catkey", None],
+        "call_number": ["Call Number", "descriptive_metadata.identifiers.call_number", None],
+        "other_identifiers": ["Other Identifier (in scope:id format)", "descriptive_metadata.identifiers.other_identifiers", handle_other_identifiers, True]
+    }
+    
     parser = argparse.ArgumentParser(description="Create a new project in this directory")
     parser.add_argument("--debug", default=False, action="store_true", help="Turn on debugging")
-    parser.add_argument("profile", help="digitization entity profile")
     parser.add_argument("id", help="ID of the project")
+    for m, v in metadata.items():
+        parms = {'type': str,
+                 'help': v[0],
+                 'default': None if callable(v[2]) else v[2]}
+        if len(v) >= 4:
+            parms['action'] = 'append'
+        parser.add_argument(f"--{m}", **parms)
+
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.DEBUG if args.debug else logging.INFO)
-
-    profile = load_profile(args.profile)
-    config = load_config()
     
     try: 
-        Project(Path(config.project_root), args.id, profile)
+        Project(Path.cwd(), args.id)
         logging.error("Project already exists!")
         exit(1)
     except FileNotFoundError:
         # if the project isn't found, that's actually a good thing.
         pass
 
-    project = Project(Path(config.project_root), args.id, profile, create=True)
+    defaults = {}
+    argdict = vars(args)
+    for m, v in metadata.items():
+        if argdict.get(m, None) is not None:
+            if callable(v[2]):
+                r = v[2](argdict[m])
+                if r is not None:
+                    defaults[v[1]] = r
+            else:
+                defaults[v[1]] = argdict[m]
 
+    project = Project(Path.cwd(), args.id, create=True,
+                      defaults=defaults)
     logging.info(f"Project {project.name} has been created at {project.project_root}")
 
 
+def handle_contacts(contacts):
+    r = []
+    for c in contacts:
+        if ':' not in c:
+            logging.error(f"Contact '{c}' doesn't contain a colon.")
+            exit(1)
+        u, e = c.split(":", 1)
+        r.append({'name': u.strip(), 'email': e.strip()})
+    return r
 
+
+def handle_other_identifiers(identifiers):
+    r = []
+    for i in identifiers:
+        if ':' not in i:
+            logging.error(f"Identifier '{i}' doesn't contain a colon.")
+            exit(1)
+        s, x = i.split(":", 1)
+        r.append({'scope': s.strip(), 'identifier': x.strip()})
+    return r
+    
 
 if __name__ == "__main__":
     main()

@@ -1,2 +1,4 @@
 schema_base: /home/bdwheele/work_projects/DigitizationWorkflowInformationManager/schemas
-project_root: /tmp/dwim
+
+# Not used any more
+#project_root: /tmp/dwim
