@@ -1,0 +1,146 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://dlib.indiana.edu/dwim/schemas/media/open_reel_audio-media@v1",
+    
+    "title": "Open Reel Audio",
+    "description": "Open Reel Audio",
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["schema_id", "profile", "identification", "media_type", "title", "barcode", 
+                 "digitizer", "digitization_date",
+                 "physical_details", "problems"],
+    "properties": {
+        "schema_id": {
+            "const": "media/open_reel_audio-media@v1"
+        },
+        "identification": {
+            "title": "Identification",
+            "identification": "Identification information to provide context",
+            "type": "object",
+            "properties": {    
+                "project_id": {
+                    "title": "Project ID",
+                    "description": "The unique ID that represents this project",
+                    "type": "string"
+                },
+                "physical_object_id": {
+                    "title": "Physical Object ID",
+                    "description": "The ID for the physical object that this describes",
+                    "type": "string"
+                }
+            }
+        },
+        "media_type": {
+            "title": "Media Type",
+            "description": "Media Type",
+            "const": "open_reel_audio"
+        },
+        "title": {
+            "title": "Title",
+            "description": "Title of the physical media if it differs from the project",
+            "type": "string",            
+            "default": "SAME"
+        },
+        "barcode": {
+            "title":  "Identifier",
+            "description": "Identifier (such as a barcode) for the object",
+            "type": "string",
+            "default": "no identifier"
+        },
+        "digitizer": {
+            "title": "Digitizer",
+            "description": "username of the person doing the digitization",
+            "type": "string"
+        },
+        "digitization_date": {
+            "title": "Digitization Date",
+            "description":  "Date the object was digitized",
+            "type": "string",
+            "format": "date"
+        },
+        "physical_details": {
+            "title": "Physical Details",
+            "description": "Details about the physical media",
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["tape_brand", "reel_size", "format_duration", "tape_base", 
+                         "track_configuration", "calculated_directions", "actual_directions",
+                         "comments"],
+            "properties": {
+                "tape_brand": {
+                    "title": "Tape brand",
+                    "description": "Brand/manufacturer of the tape",
+                    "type": "string"
+                },
+                "reel_size": {
+                    "title": "Reel Size",
+                    "description": "Size of the reel in inches",
+                    "type": "integer",
+                    "default": 7
+                },
+                "format_duration": {
+                    "title": "Format duration",
+                    "description": "The nominal duration of the media",
+                    "type": "string"
+                },        
+                "tape_base": {
+                    "title": "Tape Base",
+                    "description": "Base material for the tape",
+                    "type": "string",
+                    "default": "n/a"
+                },
+                "track_configuration": {
+                    "title": "Track Configuration",
+                    "description": "Recorded track configuration",
+                    "type": "string",
+                    "default": "stereo"
+                },
+                "calculated_directions": {
+                    "title": "Calculated Directions",
+                    "description": "Calculated number of directions recorded onto the media",
+                    "type": "integer",
+                    "default": 2
+                },
+                "actual_directions": {
+                    "title": "Actual Directions",
+                    "description": "Actual number of directions recorded onto the media",
+                    "type": "integer",
+                    "default": 2
+                },                
+                "comments": {
+                    "title": "Comments",
+                    "description": "Comments noting anything unusual about the media",
+                    "type": "string",
+                    "default": "no comment"           
+                }
+            }
+        },
+        "problems": {
+            "title": "Problems",
+            "description": "Problems with the physical media that may impair capture",
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["pack_deformation", "preservation_problems", "structural_damage"],
+            "properties": {
+                "pack_deformation": {
+                    "title": "Pack Deformation",
+                    "description": "Details of the tape packing deformation",
+                    "type": "string",
+                    "default": "n/a"
+                },
+                "preservation_problems": {
+                    "title": "Preservation Problems",
+                    "description": "Details of preservation problems with the media",
+                    "type": "string",
+                    "default": "n/a"
+                },
+                "structural_damage": {
+                    "title": "Structural Damage",
+                    "description": "Details of any structural damage to the media",
+                    "type": "string",
+                    "default": "n/a"
+                }
+            }
+        }
+    }
+}       
