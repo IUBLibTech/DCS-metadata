@@ -12,22 +12,29 @@ physical_objects:
     sequence_count: 2  
     uses:
       pres:
-        pattern: AVPS_{barcode:14s}_{sequence:02d}_pres.wav
+        pattern: AVPS_{barcode:14s}_{sequence_id:02d}_pres.wav
         has_metadata: true
                 
       prod: 
-        pattern: AVPS_{barcode:14s}_{sequence:02d}_prod.wav
+        pattern: AVPS_{barcode:14s}_{sequence_id:02d}_prod.wav
 
       presInt:
-        pattern: AVPS_{barcode:14s}_{sequence:02d}_presInt.wav
+        pattern: AVPS_{barcode:14s}_{sequence_id:02d}_presInt.wav
         optional: true
         
-
-
-    
-
   _video:
     sequence_count: 1
+    sequence_defaults: 
+      label: recording {sequence_id}
+    uses:
+      pres:
+        pattern: AVPS_{barcode:14s}_{sequence_id:02d}_pres.mkv
+        has_metadata: true
+
+      mezz:
+        pattern: AVPS_{barcode:14s}_{sequence_id:02d}_mezz.mov
+
+
 
   # real datatypes
   audiocassette:
@@ -40,3 +47,9 @@ physical_objects:
     isa: [_audio]
     sequence_defaults:
       label: direction {sequence_id}
+
+  umatic:
+    isa: [_video]
+
+  betacam:
+    isa: [_video]

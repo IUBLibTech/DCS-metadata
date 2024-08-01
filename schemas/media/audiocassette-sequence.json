@@ -32,7 +32,7 @@
                 "sequence_id": {
                     "title": "Sequence ID",
                     "description": "The sequence number",
-                    "type": "string"
+                    "type": "integer"
                 }
             }
         },

@@ -1,12 +1,20 @@
 from pathlib import Path
 import yaml
 import sys
+from jsonschema import Validator
 from jsonschema.exceptions import ValidationError
 from jsonschema.validators import Draft202012Validator
+from referencing import Registry, Resource
 import jsonpath_ng 
 import logging
 
 schema_dir: Path = Path(sys.path[0], "../schemas")
+
+def retrieve_schema(uri: str):
+    logging.info(f"Retrieving schema {uri}")
+
+
+registry = Registry(retrieve=retrieve_schema)
 
 class Schema:
     "JSON Schema Management Stuff"
@@ -19,6 +27,13 @@ class Schema:
         with open(self.schema_path) as f:
             self.schema = yaml.safe_load(f)
 
+        validator = Validator(self.schema, registry=registry)        
+        validator.check_schema(self.schema)
+        print("empty is valid", validator.is_valid({'foo': 'bar'}))
+        print(registry)
+        print(dir(validator))
+
+
 
     def create_skeleton(self):
         """Create a data structure that uses the schema defaults"""
@@ -26,6 +41,9 @@ class Schema:
     
 
     def _create_skeleton(self, schema):
+        if '$ref' in schema:
+            print(f"has ref: {schema}")
+        
         if 'const' in schema:
             return schema['const']
         match schema.get('type', None):

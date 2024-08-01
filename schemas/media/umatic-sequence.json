@@ -1,12 +1,11 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://dlib.indiana.edu/dwim/schemas/media/open_reel_audio-sequence@v1",
-    "title": "DWIM Open Reel Audio Digitization Sequence",
+    "$id": "https://dlib.indiana.edu/dwim/schemas/media/umatic-sequence@v1",
+    "title": "DWIM U-matic Digitization Sequence",
     "description": "Capture / Playback details for an individual capture",
     "type": "object",
     "additionalProperties": false,
-    "required": ["system", "label", "tape_speed", "signal_chain", "sound_field", 
-                 "reference_fluxivity", "gain", "output_voltage", "peak_dbfs", "comments"],
+    "required": ["system", "label", "recording_standard", "image_format", "format_version", "signal_chain", "sound_field", "comments"],
     "properties": {
         "system": {
             "title": "System Information",
@@ -14,7 +13,7 @@
             "required": ["schema_id", "profile", "project_id", "physical_object_id", "sequence_id"],
             "properties": {    
                 "schema_id": {
-                    "const": "media/open_reel_audio-sequence@v1"
+                    "const": "media/umatic-sequence@v1"
                 },        
                 "profile": {
                     "title": "Profile name",
@@ -37,7 +36,6 @@
                 }
             }
         },
-
         "label": {
             "title": "Label",
             "description": "Label information to identify the part of the media being digitized",
@@ -45,15 +43,22 @@
             "default": "n/a"
         },
 
-        "tape_speed": {
-            "title": "Tape Speed",
-            "description": "Recording speed used in inches per second",
-            "type": "array",
-            "minContains": 1,
-            "items": {
-                "enum": ["7.5 ips", "3.75 ips", "1.875 ips", "0.9375 ips", "0.46875 ips", "unknown"]
-            },
-            "default": ["3.5 ips"]
+        "recording_standard": {
+            "title": "Recording Standard",
+            "enum": ["NTSC", "PAL", "SECAM"],
+            "default": "NTSC"
+        },
+
+        "image_format": {
+            "title": "Image Format",
+            "description": "Captured image format",
+            "enum": ["4:3"],
+            "default": "4:3"
+        },
+        "format_version": {
+            "title": "Format Version",
+            "enum": ["high band", "low band", "SP"],
+            "default": "high band"
         },
         "signal_chain": {
             "title": "Signal Chain",
@@ -63,32 +68,9 @@
         "sound_field": {
             "title": "Sound Field",
             "description": "What kind of sound field was captured",
-            "enum": ["stereo", "mono"],
+            "enum": ["ch1 only", "ch2 only", "stereo", "mono", "split tracks"],
             "default": "stereo"
         },
-
-
-        "reference_fluxivity": {
-            "title": "Reference Fluxivity",
-            "type": "string",
-            "default": "n/a"
-        },
-        "gain": {
-            "title": "Gain",
-            "type": "string",
-            "default": "n/a"
-        },
-        "output_voltage": {
-            "title": "Output Voltage",
-            "type": "string",
-            "default": "n/a"
-        },
-        "peak_dbfs": {
-            "title": "Peak dBfs",
-            "type": "string",
-            "default": "n/a"
-        },
-
         "comments": {
             "title": "Digitization Notes",
             "description": "Comments about anything strange or abnormal about the content",

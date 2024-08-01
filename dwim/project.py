@@ -93,10 +93,10 @@ class Project:
                 continue
             
             # create media stub file
-            (po_path / usedata.pattern.format(**id_fields, sequence=seqno)).touch()
+            (po_path / usedata.pattern.format(**id_fields, sequence_id=seqno)).touch()
             #  create metadata if it's specified.
             if usedata.has_metadata:
-                mdfile = po_path / ((usedata.pattern.format(**id_fields, sequence=seqno)) + ".yaml")
+                mdfile = po_path / ((usedata.pattern.format(**id_fields, sequence_id=seqno)) + ".yaml")
                 if mdfile.exists():
                     logging.warn(f"Not overwriting {mdfile} when creating sequence")
                     continue
