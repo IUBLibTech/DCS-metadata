@@ -9,6 +9,7 @@
         "system": {
             "title": "System Information",
             "type": "object",
+            "required": ["schema_id", "project_id"],
             "properties": {    
                 "schema_id": {
                     "const": "project@v1"            
@@ -23,7 +24,8 @@
         "project_information": {
             "title": "Project Information",
             "description": "Information about the project to digitize this object",
-            "additionalProperties": false,
+            "type": "object",
+            "additionalProperties": false,            
             "required": ["creator", "creator_name", "create_date", "completion_date", "contacts", "comments"],
             "properties": {
                 "creator": {

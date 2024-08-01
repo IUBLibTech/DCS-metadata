@@ -13,6 +13,7 @@
         "system": {
             "title": "System Information",
             "type": "object",
+            "required": ["schema_id", "profile", "project_id", "physical_object_id"],
             "properties": {    
                 "schema_id": {
                     "const": "media/audiocassette-media@v1"

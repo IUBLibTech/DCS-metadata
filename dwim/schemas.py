@@ -41,13 +41,17 @@ class Schema:
                 for _ in range(schema.get('minContains', 1)):
                     d.append(self._create_skeleton(schema['items']))
             case 'integer' | 'float' | 'string' | 'boolean':
-                return schema.get('default', '__UNSET__')
-            case _:
+                d = schema.get('default', '__UNSET__')
+            case None:
                 if 'enum' in schema:
-                    return schema.get('default', schema['enum'][0])
+                    logging.debug("Found an enum!")
+                    d= schema.get('default', schema['enum'][0])
                 else:
-                    # this is a type we can't handle.  Just return None?
-                    return None
+                    logging.warning(f"Schema {schema} doesn't have a type set and not an enum!")
+                    d = None
+            case _:
+                logging.warning(f"Schema {schema} doesn't have a type")
+                d = None
         return d
 
 
