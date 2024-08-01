@@ -24,12 +24,16 @@ class Project:
             
             # create the project file and directory structure
             self.project_root.mkdir()
+            schema_dir = self.project_root / "schemas"
+            schema_dir.mkdir()
             project = Model("project")                        
+            project.write_json_schema(schema_dir / "project.json")
+            
             if defaults:
                 project.patch(defaults)
             project.patch({"system.project_id": name})
             with open(self.project_root / "project.yaml", "w") as f:
-                f.write(project.get_yaml_text())
+                f.write(project.get_yaml_text("schemas/"))
 
         self.refresh_project()
 
@@ -58,7 +62,9 @@ class Project:
         id_fields = validate_id(physical_id, config.id_pattern, config.id_validators, exact=True)
                 
         # get the schema for this type
-        media = Model(f"media/{physical_type}-media")        
+        media = Model(f"{physical_type}-media")        
+        media.write_json_schema(self.project_root / f"schemas/{physical_type}-media.json")
+
         media.patch(config.media_defaults)
         media.patch(defaults)
         media.patch({'system.profile': profile.name,
@@ -67,7 +73,7 @@ class Project:
  
         po_path.mkdir()
         with open(po_path / "physical_object.yaml", "w") as f:
-            f.write(media.get_yaml_text())
+            f.write(media.get_yaml_text("../schemas/"))
         
         if config.sequence_count:
             # create sequence stubs
@@ -93,7 +99,8 @@ class Project:
             (po_path / usedata.pattern.format(**id_fields, sequence_id=seqno)).touch()
             #  create metadata if it's specified.
             if usedata.has_metadata:
-                seq_meta = Model(f"media/{physical_type}-sequence")
+                seq_meta = Model(f"{physical_type}-sequence")
+                seq_meta.write_json_schema(self.project_root / f"schemas/{physical_type}-sequence.json")
                 mdfile = po_path / ((usedata.pattern.format(**id_fields, sequence_id=seqno)) + ".yaml")
                 if mdfile.exists():
                     logging.warn(f"Not overwriting {mdfile} when creating sequence")
@@ -109,5 +116,5 @@ class Project:
                                'system.sequence_id': seqno})
                                 
                 with open(mdfile, "w") as f:
-                    f.write(seq_meta.get_yaml_text())
+                    f.write(seq_meta.get_yaml_text("../schemas/"))
 

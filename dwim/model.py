@@ -3,7 +3,7 @@ import yaml
 import sys
 import jsonpath_ng 
 import logging
-
+import json
 from dwim.models.project import Project
 from dwim.models.media.audiocassette import Audiocassette_Media, AudioCassette_Sequence
 from dwim.models.media.open_reel_audio import OpenReelAudio_Media, OpenReelAudio_Sequence
@@ -14,10 +14,10 @@ schema_dir: Path = Path(sys.path[0], "../schemas")
 
 model_map = {
     'project': Project,
-    'media/audiocassette-media': Audiocassette_Media,
-    'media/audiocassette-sequence': AudioCassette_Sequence,
-    'media/open_reel_audio-media': OpenReelAudio_Media,
-    'media/open_reel_audio-sequence': OpenReelAudio_Sequence
+    'audiocassette-media': Audiocassette_Media,
+    'audiocassette-sequence': AudioCassette_Sequence,
+    'open_reel_audio-media': OpenReelAudio_Media,
+    'open_reel_audio-sequence': OpenReelAudio_Sequence
 }
 
 
@@ -79,3 +79,8 @@ class Model:
         txt = txt.replace(UNSET, '')
 
         return txt
+
+    def write_json_schema(self, outfile: Path):
+        """Generate a json schema and write it to the disk"""
+        with open(outfile, "w") as f:
+            json.dump(self.model.model_json_schema(), f, indent=4, sort_keys=False)
