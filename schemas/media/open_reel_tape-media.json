@@ -1,14 +1,5 @@
 {
     "$defs": {
-        "CassType": {
-            "enum": [
-                "compact",
-                "micro",
-                "mini"
-            ],
-            "title": "CassType",
-            "type": "string"
-        },
         "PhysicalDetails": {
             "properties": {
                 "comments": {
@@ -23,26 +14,41 @@
                     "title": "Tape Brand",
                     "type": "string"
                 },
+                "reel_size": {
+                    "default": 7,
+                    "description": "Reel size in inches",
+                    "title": "Reel Size",
+                    "type": "number"
+                },
                 "format_duration": {
                     "default": "__UNSET__",
                     "description": "Nominal duration of the media",
                     "title": "Format Duration",
                     "type": "string"
                 },
-                "cassette_type": {
-                    "allOf": [
-                        {
-                            "$ref": "#/$defs/CassType"
-                        }
-                    ],
-                    "default": "compact",
-                    "description": "Type of cassette"
-                },
-                "tape_type": {
-                    "default": "unknown",
-                    "description": "Tape type / formulation",
-                    "title": "Tape Type",
+                "tape_base": {
+                    "default": "n/a",
+                    "description": "Base material for the tape",
+                    "title": "Tape Base",
                     "type": "string"
+                },
+                "track_configuration": {
+                    "default": "stereo",
+                    "description": "Recorded Track Configuration",
+                    "title": "Track Configuration",
+                    "type": "string"
+                },
+                "calculated_directions": {
+                    "default": 2,
+                    "description": "Calculated number of directions recorded onto the media",
+                    "title": "Calculated Directions",
+                    "type": "integer"
+                },
+                "actual_directions": {
+                    "default": 2,
+                    "description": "Actual number of directions recorded onto the media",
+                    "title": "Actual Directions",
+                    "type": "integer"
                 }
             },
             "title": "PhysicalDetails",
@@ -99,10 +105,10 @@
                     "type": "integer"
                 },
                 "schema_name": {
-                    "const": "audiocassette-media@v1",
-                    "default": "audiocassette-media@v1",
+                    "const": "open_reel_tape-media@v1",
+                    "default": "open_reel_tape-media@v1",
                     "enum": [
-                        "audiocassette-media@v1"
+                        "open_reel_tape-media@v1"
                     ],
                     "title": "Schema Name",
                     "type": "string"
@@ -112,16 +118,16 @@
             "type": "object"
         }
     },
-    "description": "Physical Description of Audiocassette carrier",
+    "description": "Physical Description of OpenReelTape carrier",
     "properties": {
         "system": {
             "$ref": "#/$defs/System"
         },
         "media_type": {
-            "const": "audiocassette",
-            "default": "audiocassette",
+            "const": "open_reel_tape",
+            "default": "open_reel_tape",
             "enum": [
-                "audiocassette"
+                "open_reel_tape"
             ],
             "title": "Media Type",
             "type": "string"
@@ -158,6 +164,6 @@
             "$ref": "#/$defs/Problems"
         }
     },
-    "title": "Audiocassette_Media",
+    "title": "OpenReelTape_Media",
     "type": "object"
 }

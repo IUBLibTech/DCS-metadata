@@ -1,0 +1,154 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://dlib.indiana.edu/dwim/schemas/project@v1",
+    "title": "DWIM Project",
+    "description": "Digitization Workflow Information Manager Project",
+    "type": "object",
+    "required": ["system", "project_information", "descriptive_metadata"],
+    "properties": {
+        "system": {
+            "title": "System Information",
+            "type": "object",
+            "required": ["schema_id", "project_id"],
+            "properties": {    
+                "schema_id": {
+                    "const": "project@v1"            
+                },        
+                "project_id": {
+                    "title": "Project ID",
+                    "description": "The unique ID that represents this project",
+                    "type": "string"
+                }
+            }
+        },
+        "project_information": {
+            "title": "Project Information",
+            "description": "Information about the project to digitize this object",
+            "type": "object",
+            "additionalProperties": false,            
+            "required": ["creator", "creator_name", "create_date", "completion_date", "contacts", "comments"],
+            "properties": {
+                "creator": {
+                    "title": "Project Creator Username",
+                    "description": "User that created the project",
+                    "type": "string"
+                },
+                "creator_name": {
+                    "title": "Project Creator Name",
+                    "description": "Name of user that created the project",
+                    "type": "string"
+                },
+                "create_date": {
+                    "title": "Create Date",
+                    "description": "Date the project was created",
+                    "type": "string",
+                    "format": "date"
+                },
+                "completion_date": {
+                    "title": "Completion date",
+                    "description": "Date the digitization was completed",
+                    "type": "string",
+                    "format": "date"
+                },
+                "contacts": {
+                    "title": "Project Contacts",
+                    "description": "How to contact the owners",
+                    "type": "array",
+                    "minContains": 1,
+                    "items": {
+                        "title": "Contact Information",
+                        "description": "owner contact",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": ["name", "email"],
+                        "properties": {
+                            "name": {
+                                "title": "Contact Name",
+                                "description": "Contact name",
+                                "type": "string"
+                            },
+                            "email": {
+                                "title": "Contact Email",
+                                "description": "email address",
+                                "type": "string",
+                                "format": "email"
+                            }
+                        }
+                    }
+                },
+                "comments": {
+                    "title": "Project Comments",
+                    "description": "Comments about the project",
+                    "type": "string",
+                    "default": "no comment"
+                }
+            }
+        },
+        "descriptive_metadata": {
+            "description": "Descriptive Metadata",
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "title",
+                "identifiers"
+            ],
+            "properties": {
+                "title": {
+                    "description": "Work Title",
+                    "type": "string"
+                },
+                "identifiers": {
+                    "description": "Identifiers for this work",
+                    "required": ["iucat_barcode", "iucat_catkey", "call_number"],
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "iucat_barcode": {
+                            "type": "string",
+                            "description": "IUcat Barcode",
+                            "default": "n/a"
+                        },
+                        "iucat_catkey": {
+                            "type": "string",
+                            "description": "Catalog Key",
+                            "default": "n/a"
+                        },
+                        "call_number": {
+                            "type": "string",
+                            "description": "Call Number",
+                            "default": "n/a"
+                        },
+                        "other_identifiers": {
+                            "title": "Other Identifiers",
+                            "description": "Other identifiers for the intellectual object",
+                            "type": "array",
+                            "minContains": 1,
+                            "items": {
+                                "title": "Additional Identifier",
+                                "type": "object",
+                                "additionalProperties": false,
+                                "required": [
+                                    "scope",
+                                    "identifier"
+                                ],
+                                "properties": {
+                                    "scope": {
+                                        "type": "string",
+                                        "description": "Scope for the identifier"
+                                    },
+                                    "identifier": {
+                                        "type": "string",
+                                        "description": "Local Identifier"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                }
+            }
+        }
+
+    }
+
+}

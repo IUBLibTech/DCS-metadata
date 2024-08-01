@@ -1,154 +1,195 @@
 {
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://dlib.indiana.edu/dwim/schemas/project@v1",
-    "title": "DWIM Project",
-    "description": "Digitization Workflow Information Manager Project",
-    "type": "object",
-    "required": ["system", "project_information", "descriptive_metadata"],
-    "properties": {
-        "system": {
-            "title": "System Information",
-            "type": "object",
-            "required": ["schema_id", "project_id"],
-            "properties": {    
-                "schema_id": {
-                    "const": "project@v1"            
-                },        
-                "project_id": {
-                    "title": "Project ID",
-                    "description": "The unique ID that represents this project",
-                    "type": "string"
-                }
-            }
-        },
-        "project_information": {
-            "title": "Project Information",
-            "description": "Information about the project to digitize this object",
-            "type": "object",
-            "additionalProperties": false,            
-            "required": ["creator", "creator_name", "create_date", "completion_date", "contacts", "comments"],
+    "$defs": {
+        "Contact": {
+            "description": "Contact Information",
             "properties": {
-                "creator": {
-                    "title": "Project Creator Username",
-                    "description": "User that created the project",
+                "name": {
+                    "default": "__UNSET__",
+                    "description": "Contact Name",
+                    "title": "Name",
                     "type": "string"
                 },
-                "creator_name": {
-                    "title": "Project Creator Name",
-                    "description": "Name of user that created the project",
+                "email": {
+                    "default": "__UNSET__",
+                    "description": "Contact Email",
+                    "format": "email",
+                    "title": "Email",
                     "type": "string"
-                },
-                "create_date": {
-                    "title": "Create Date",
-                    "description": "Date the project was created",
-                    "type": "string",
-                    "format": "date"
-                },
-                "completion_date": {
-                    "title": "Completion date",
-                    "description": "Date the digitization was completed",
-                    "type": "string",
-                    "format": "date"
-                },
-                "contacts": {
-                    "title": "Project Contacts",
-                    "description": "How to contact the owners",
-                    "type": "array",
-                    "minContains": 1,
-                    "items": {
-                        "title": "Contact Information",
-                        "description": "owner contact",
-                        "type": "object",
-                        "additionalProperties": false,
-                        "required": ["name", "email"],
-                        "properties": {
-                            "name": {
-                                "title": "Contact Name",
-                                "description": "Contact name",
-                                "type": "string"
-                            },
-                            "email": {
-                                "title": "Contact Email",
-                                "description": "email address",
-                                "type": "string",
-                                "format": "email"
-                            }
-                        }
-                    }
-                },
-                "comments": {
-                    "title": "Project Comments",
-                    "description": "Comments about the project",
-                    "type": "string",
-                    "default": "no comment"
                 }
-            }
+            },
+            "title": "Contact",
+            "type": "object"
         },
-        "descriptive_metadata": {
-            "description": "Descriptive Metadata",
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-                "title",
-                "identifiers"
-            ],
+        "DescriptiveMetadata": {
+            "description": "Project Descriptive Metadata",
             "properties": {
                 "title": {
-                    "description": "Work Title",
+                    "default": "Project Title",
+                    "title": "Title",
                     "type": "string"
                 },
                 "identifiers": {
-                    "description": "Identifiers for this work",
-                    "required": ["iucat_barcode", "iucat_catkey", "call_number"],
-                    "type": "object",
-                    "additionalProperties": false,
-                    "properties": {
-                        "iucat_barcode": {
-                            "type": "string",
-                            "description": "IUcat Barcode",
-                            "default": "n/a"
-                        },
-                        "iucat_catkey": {
-                            "type": "string",
-                            "description": "Catalog Key",
-                            "default": "n/a"
-                        },
-                        "call_number": {
-                            "type": "string",
-                            "description": "Call Number",
-                            "default": "n/a"
-                        },
-                        "other_identifiers": {
-                            "title": "Other Identifiers",
-                            "description": "Other identifiers for the intellectual object",
-                            "type": "array",
-                            "minContains": 1,
-                            "items": {
-                                "title": "Additional Identifier",
-                                "type": "object",
-                                "additionalProperties": false,
-                                "required": [
-                                    "scope",
-                                    "identifier"
-                                ],
-                                "properties": {
-                                    "scope": {
-                                        "type": "string",
-                                        "description": "Scope for the identifier"
-                                    },
-                                    "identifier": {
-                                        "type": "string",
-                                        "description": "Local Identifier"
-                                    }
-                                }
-                            }
+                    "allOf": [
+                        {
+                            "$ref": "#/$defs/Identifiers"
                         }
-                    }
-                    
+                    ],
+                    "description": "Project identifiers"
                 }
-            }
+            },
+            "title": "DescriptiveMetadata",
+            "type": "object"
+        },
+        "Identifiers": {
+            "description": "Project Identifiers",
+            "properties": {
+                "iucat_barcode": {
+                    "default": "",
+                    "description": "IUCAT Barcode",
+                    "title": "Iucat Barcode",
+                    "type": "string"
+                },
+                "iucat_catkey": {
+                    "default": "",
+                    "description": "IUCAT Catalog Key",
+                    "title": "Iucat Catkey",
+                    "type": "string"
+                },
+                "call_number": {
+                    "default": "",
+                    "description": "Call Number",
+                    "title": "Call Number",
+                    "type": "string"
+                },
+                "other_identifiers": {
+                    "description": "Other identifiers",
+                    "items": {
+                        "$ref": "#/$defs/ScopedIdentifier"
+                    },
+                    "title": "Other Identifiers",
+                    "type": "array"
+                }
+            },
+            "title": "Identifiers",
+            "type": "object"
+        },
+        "PSystem": {
+            "properties": {
+                "project_id": {
+                    "default": "",
+                    "description": "Project ID",
+                    "title": "Project Id",
+                    "type": "string"
+                },
+                "profile": {
+                    "default": "",
+                    "description": "Digitizer Profile",
+                    "title": "Profile",
+                    "type": "string"
+                },
+                "physical_object_id": {
+                    "default": "",
+                    "description": "Physical Object ID",
+                    "title": "Physical Object Id",
+                    "type": "string"
+                },
+                "sequence_id": {
+                    "default": 0,
+                    "description": "Sequence ID",
+                    "title": "Sequence Id",
+                    "type": "integer"
+                },
+                "schema_name": {
+                    "const": "project@v1",
+                    "default": "project@v1",
+                    "enum": [
+                        "project@v1"
+                    ],
+                    "title": "Schema Name",
+                    "type": "string"
+                }
+            },
+            "title": "PSystem",
+            "type": "object"
+        },
+        "ProjectInfo": {
+            "description": "Project Information",
+            "properties": {
+                "creator": {
+                    "default": "",
+                    "description": "Project Creator Username",
+                    "title": "Creator",
+                    "type": "string"
+                },
+                "creator_name": {
+                    "default": "",
+                    "description": "Project Creator Name",
+                    "title": "Creator Name",
+                    "type": "string"
+                },
+                "create_date": {
+                    "default": "",
+                    "description": "Project creation date",
+                    "title": "Create Date",
+                    "type": "string"
+                },
+                "completion_date": {
+                    "default": "",
+                    "description": "Completion date",
+                    "title": "Completion Date",
+                    "type": "string"
+                },
+                "contacts": {
+                    "description": "List of contacts for this project",
+                    "items": {
+                        "$ref": "#/$defs/Contact"
+                    },
+                    "minItems": 1,
+                    "title": "Contacts",
+                    "type": "array"
+                },
+                "comments": {
+                    "default": "no comment",
+                    "description": "Comments about the project",
+                    "title": "Comments",
+                    "type": "string"
+                }
+            },
+            "title": "ProjectInfo",
+            "type": "object"
+        },
+        "ScopedIdentifier": {
+            "description": "An identifier with a scope",
+            "properties": {
+                "scope": {
+                    "default": "__UNSET__",
+                    "description": "Identifier Scope",
+                    "title": "Scope",
+                    "type": "string"
+                },
+                "identifier": {
+                    "default": "__UNSET__",
+                    "description": "Identifier",
+                    "title": "Identifier",
+                    "type": "string"
+                }
+            },
+            "title": "ScopedIdentifier",
+            "type": "object"
         }
-
-    }
-
+    },
+    "description": "Digitization Project",
+    "properties": {
+        "system": {
+            "$ref": "#/$defs/PSystem"
+        },
+        "project_information": {
+            "$ref": "#/$defs/ProjectInfo"
+        },
+        "descriptive_metadata": {
+            "$ref": "#/$defs/DescriptiveMetadata"
+        }
+    },
+    "title": "Project",
+    "type": "object"
 }

@@ -1,14 +1,5 @@
 {
     "$defs": {
-        "NoiseReduction": {
-            "enum": [
-                "none",
-                "Dolby",
-                "Dolby C"
-            ],
-            "title": "NoiseReduction",
-            "type": "string"
-        },
         "SoundField": {
             "enum": [
                 "stereo",
@@ -44,10 +35,10 @@
                     "type": "integer"
                 },
                 "schema_name": {
-                    "const": "audiocassette-sequence@v1",
-                    "default": "audiocassette-sequence@v1",
+                    "const": "open_reel_tape-sequence@v1",
+                    "default": "open_reel_tape-sequence@v1",
                     "enum": [
-                        "audiocassette-sequence@v1"
+                        "open_reel_tape-sequence@v1"
                     ],
                     "title": "Schema Name",
                     "type": "string"
@@ -58,6 +49,7 @@
         },
         "TapeSpeed": {
             "enum": [
+                "7.5 ips",
                 "3.75 ips",
                 "1.875 ips",
                 "0.9375 ips",
@@ -108,16 +100,31 @@
             "default": "stereo",
             "description": "Recorded sound field"
         },
-        "noise_reduction": {
-            "allOf": [
-                {
-                    "$ref": "#/$defs/NoiseReduction"
-                }
-            ],
-            "default": "none",
-            "description": "Noise reduction used"
+        "reference_fluxivity": {
+            "default": "n/a",
+            "description": "Reference fluxivity",
+            "title": "Reference Fluxivity",
+            "type": "string"
+        },
+        "gain": {
+            "default": "n/a",
+            "description": "Gain",
+            "title": "Gain",
+            "type": "string"
+        },
+        "output_voltage": {
+            "default": "n/a",
+            "description": "Output voltage",
+            "title": "Output Voltage",
+            "type": "string"
+        },
+        "peak_dbfs": {
+            "default": "n/a",
+            "description": "peak dBfs",
+            "title": "Peak Dbfs",
+            "type": "string"
         }
     },
-    "title": "AudioCassette_Sequence",
+    "title": "OpenReelTape_Sequence",
     "type": "object"
 }
