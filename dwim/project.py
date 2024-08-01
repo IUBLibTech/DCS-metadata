@@ -25,7 +25,7 @@ class Project:
             self.project_root.mkdir()
             project_schema = Schema("project")
             project = project_schema.create_skeleton()
-            project = project_schema.apply_defaults(project, {"identification.project_id": name})
+            project = project_schema.apply_defaults(project, {"system.project_id": name})
             if defaults:
                 project = project_schema.apply_defaults(project, defaults)
             
@@ -63,9 +63,9 @@ class Project:
         media = schema.create_skeleton()
         media = schema.apply_defaults(media, config.media_defaults)
         media = schema.apply_defaults(media, defaults)
-        media = schema.apply_defaults(media, {'profile': profile.name,
-                                              'identification.project_id': self.name,
-                                              'identification.physical_object_id': physical_id})
+        media = schema.apply_defaults(media, {'system.profile': profile.name,
+                                              'system.project_id': self.name,
+                                              'system.physical_object_id': physical_id})
  
         po_path.mkdir()
         with open(po_path / "physical_object.yaml", "w") as f:
@@ -101,10 +101,13 @@ class Project:
                     logging.warn(f"Not overwriting {mdfile} when creating sequence")
                     continue
                 seq_meta = schema.create_skeleton()
-                seq_meta = schema.apply_defaults(seq_meta, config.sequence_defaults)
-                seq_meta = schema.apply_defaults(seq_meta, {'identification.project_id': self.name,
-                                                            'identification.physical_object_id': physical_id,
-                                                            'identification.sequence_id': seqno})
+                seq_meta = schema.apply_defaults(seq_meta, config.sequence_defaults, variables={'project_id': self.name,
+                                                                                                'physical_object_id': physical_id,
+                                                                                                'sequence_id': seqno})
+                seq_meta = schema.apply_defaults(seq_meta, {'system.profile': profile.name,
+                                                            'system.project_id': self.name,
+                                                            'system.physical_object_id': physical_id,
+                                                            'system.sequence_id': seqno})
                 if defaults:
                     seq_meta = schema.apply_defaults(seq_meta, defaults)
                 with open(mdfile, "w") as f:

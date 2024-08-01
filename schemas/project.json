@@ -4,16 +4,15 @@
     "title": "DWIM Project",
     "description": "Digitization Workflow Information Manager Project",
     "type": "object",
-    "required": ["schema_id", "identification", "project_information", "descriptive_metadata"],
+    "required": ["system", "project_information", "descriptive_metadata"],
     "properties": {
-        "schema_id": {
-            "const": "project@v1"            
-        },
-        "identification": {
-            "title": "Identification",
-            "identification": "Identification information to provide context",
+        "system": {
+            "title": "System Information",
             "type": "object",
             "properties": {    
+                "schema_id": {
+                    "const": "project@v1"            
+                },        
                 "project_id": {
                     "title": "Project ID",
                     "description": "The unique ID that represents this project",

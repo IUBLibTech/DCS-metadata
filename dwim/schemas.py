@@ -51,10 +51,13 @@ class Schema:
         return d
 
 
-    def apply_defaults(self, data: dict, defaults: dict, create=True, validate=False) -> dict:
+    def apply_defaults(self, data: dict, defaults: dict, create: bool=True, validate: bool=False, variables: dict = None) -> dict:
         """Apply defaults to the data and then validate the result."""        
         errs = []
-        for k, v in defaults.items():            
+        for k, v in defaults.items():
+            if variables:
+                # try to do variable substitution in the value
+                v = str(v).format_map(variables)    
             jpath = jsonpath_ng.parse(k)            
             if create:
                 jpath.update_or_create(data, v)        

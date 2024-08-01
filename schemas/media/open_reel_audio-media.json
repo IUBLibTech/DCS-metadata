@@ -6,18 +6,21 @@
     "description": "Open Reel Audio",
     "type": "object",
     "additionalProperties": false,
-    "required": ["schema_id", "profile", "identification", "media_type", "title", "barcode", 
+    "required": ["system", "media_type", "title", "barcode", 
                  "digitizer", "digitization_date",
                  "physical_details", "problems"],
     "properties": {
-        "schema_id": {
-            "const": "media/open_reel_audio-media@v1"
-        },
-        "identification": {
-            "title": "Identification",
-            "identification": "Identification information to provide context",
+        "system": {
+            "title": "System Information",
             "type": "object",
             "properties": {    
+                "schema_id": {
+                    "const": "media/open_reel_audio-media@v1"
+                },        
+                "profile": {
+                    "title": "Profile name",
+                    "type": "string"
+                },
                 "project_id": {
                     "title": "Project ID",
                     "description": "The unique ID that represents this project",

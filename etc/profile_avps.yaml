@@ -9,6 +9,7 @@ physical_objects:
 
   # generic templates...
   _audio:
+    sequence_count: 2  
     uses:
       pres:
         pattern: AVPS_{barcode:14s}_{sequence:02d}_pres.wav
@@ -23,7 +24,7 @@ physical_objects:
         
 
 
-    sequence_count: 2      
+    
 
   _video:
     sequence_count: 1
@@ -32,10 +33,10 @@ physical_objects:
   audiocassette:
     isa: [_audio]
     media_defaults: {}
-    sequence_defaults: {}
+    sequence_defaults:
+      label: side {sequence_id}
 
   open_reel_audio:
     isa: [_audio]
     sequence_defaults:
-      track_configuration: stereo
-      sound_field: stereo
+      label: direction {sequence_id}
