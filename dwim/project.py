@@ -27,7 +27,7 @@ class Project:
             schema_dir = self.project_root / "schemas"
             schema_dir.mkdir()
             project = Model("project")                        
-            project.write_json_schema(schema_dir / "project.json")
+            project.write_json_schema(schema_dir)
             
             if defaults:
                 project.patch(defaults)
@@ -63,7 +63,7 @@ class Project:
                 
         # get the schema for this type
         media = Model(f"{physical_type}-media")        
-        media.write_json_schema(self.project_root / f"schemas/{physical_type}-media.json")
+        media.write_json_schema(self.project_root / "schemas")
 
         media.patch(config.media_defaults)
         media.patch(defaults)
@@ -100,7 +100,7 @@ class Project:
             #  create metadata if it's specified.
             if usedata.has_metadata:
                 seq_meta = Model(f"{physical_type}-sequence")
-                seq_meta.write_json_schema(self.project_root / f"schemas/{physical_type}-sequence.json")
+                seq_meta.write_json_schema(self.project_root / "schemas")
                 mdfile = po_path / ((usedata.pattern.format(**id_fields, sequence_id=seqno)) + ".yaml")
                 if mdfile.exists():
                     logging.warn(f"Not overwriting {mdfile} when creating sequence")

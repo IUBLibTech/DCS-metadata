@@ -3,14 +3,12 @@ from typing import Literal, Optional, ClassVar
 from enum import Enum
 
 from .. import UNSET
-from ..common import SystemBase, MediaBase, PhysicalDetailsBase, ProblemsBase, string_enum, SequenceBase
-
+from ..common import System, MediaBase, PhysicalDetailsBase, ProblemsBase, SequenceBase
+from dwim.utils import string_enum
 
 class Audiocassette_Media(MediaBase):
     """Physical Description of Audiocassette carrier"""
-    #class System(SystemBase):
-    #    schema_name: Literal["audiocassette-media@v1"] = "audiocassette-media@v1"
-    system: SystemBase = Field(default_factory=SystemBase)
+    system: System = Field(default_factory=System)
     media_type: Literal["audiocassette"] = "audiocassette"
 
     class PhysicalDetails(PhysicalDetailsBase):
@@ -34,9 +32,7 @@ class Audiocassette_Media(MediaBase):
 
 
 class AudioCassette_Sequence(SequenceBase):
-    #class System(SystemBase):
-    #    schema_name: Literal["audiocassette-sequence@v1"] = "audiocassette-sequence@v1"
-    system: SystemBase = Field(default_factory=SystemBase)
+    system: System = Field(default_factory=System)
 
     model_config = ConfigDict(use_enum_values=True)
     TapeSpeed: ClassVar = string_enum('TapeSpeed', ['3.75 ips', '1.875 ips', '0.9375 ips', '0.46875 ips', 'unknown'])

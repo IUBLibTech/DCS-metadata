@@ -7,10 +7,7 @@ import json
 from dwim.models.project import Project
 from dwim.models.media.audiocassette import Audiocassette_Media, AudioCassette_Sequence
 from dwim.models.media.open_reel_audio import OpenReelAudio_Media, OpenReelAudio_Sequence
-
 from dwim.models import UNSET
-
-schema_dir: Path = Path(sys.path[0], "../schemas")
 
 model_map = {
     'project': Project,
@@ -19,7 +16,6 @@ model_map = {
     'open_reel_audio-media': OpenReelAudio_Media,
     'open_reel_audio-sequence': OpenReelAudio_Sequence
 }
-
 
 class Model:
     """Data Models"""
@@ -62,25 +58,21 @@ class Model:
         self.model(self.data)
 
 
-    def get_yaml_text(self, base=None):
+    def get_yaml_text(self, base):
         """Get the yaml file text for the data given."""
         # prepend the schema information for the yaml language server        
-        if base is None:
-            # use the default filesystem path...
-            p = (schema_dir / (self.name + ".json")).resolve()
-            txt = f"# yaml-language-server: $schema={p}\n"
-        else:
-            txt = f"# yaml-language-server: $schema={base}{self.name}.json\n"
-        
+        txt = f"# yaml-language-server: $schema={base}{self.name}.json\n"
         txt += yaml.safe_dump(self.data.model_dump(), sort_keys=False, default_flow_style=False, 
                               indent=4, width=80)
-
         # clean up the text itself and clear out "unset" things...
         txt = txt.replace(UNSET, '')
-
         return txt
+
 
     def write_json_schema(self, outfile: Path):
         """Generate a json schema and write it to the disk"""
+        if outfile.is_dir():
+            # generate the filename based on the schema name.
+            outfile = outfile / f"{self.name}.json"
         with open(outfile, "w") as f:
             json.dump(self.model.model_json_schema(), f, indent=4, sort_keys=False)

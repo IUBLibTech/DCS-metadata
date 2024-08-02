@@ -2,13 +2,11 @@ from pydantic import BaseModel, Field
 from typing import Literal
 
 from . import UNSET
-from .common import SystemBase
+from .common import System
 
 class Project(BaseModel):
     """Digitization Project"""
-    #class PSystem(SystemBase):
-    #    schema_name: Literal["project@v1"] = "project@v1"
-    system: SystemBase = Field(default_factory=SystemBase)
+    system: System = Field(default_factory=System)
 
     class ProjectInfo(BaseModel):
         """Project Information"""
@@ -21,7 +19,7 @@ class Project(BaseModel):
             """Contact Information"""  
             name: str = Field(default=UNSET, description="Contact Name")
             email: str = Field(default=UNSET, description="Contact Email",
-                            json_schema_extra={'format': 'email'})    
+                               json_schema_extra={'format': 'email'})    
         contacts: list[Contact] = Field(default_factory=lambda: list([Project.ProjectInfo.Contact()]),
                                         description="List of contacts for this project",
                                         min_length=1)
