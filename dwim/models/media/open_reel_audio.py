@@ -3,7 +3,7 @@ from typing import Literal, Optional, ClassVar
 from enum import Enum
 
 from .. import UNSET
-from ..common import System, MediaBase, PhysicalDetailsBase, ProblemsBase, SequenceBase
+from ..common import AudioSignalChain, CommonTapeProblems, SeverityScale, System, MediaBase, PhysicalDetailsBase, ProblemsBase, SequenceBase
 from dwim.utils import string_enum
 
 class OpenReelAudio_Media(MediaBase):
@@ -13,36 +13,35 @@ class OpenReelAudio_Media(MediaBase):
 
     class PhysicalDetails(PhysicalDetailsBase):
         model_config = ConfigDict(use_enum_values=True)
-        tape_brand: str = Field(default=UNSET, description="Brand of the tape media")
-        reel_size: float = Field(default=7, description="Reel size in inches")
-        format_duration: str = Field(default=UNSET, description="Nominal duration of the media")
+        media_brand: str = Field(default=UNSET, description="Brand of the tape media")
+        nominal_duration: str = Field(default=UNSET, description="Nominal duration of the media")
+        carrier_size: float = Field(default=7, description="Reel size in inches")
+        tape_thickness: float = Field(default=1.4, description="Tape thickness in mil")        
         tape_base: str = Field(default="n/a", description="Base material for the tape")
-        # are there supposed to be choices here?
-        track_configuration: str = Field(default="stereo", description="Recorded Track Configuration")
+        TapeConfiguration: ClassVar = string_enum("TapeConfiguration", ['full', 'half', 'quarter', 'unknown'])
+        track_configuration: TapeConfiguration | list(TapeConfiguration)= Field(default="half", 
+                                                                                description="Recorded Track Configuration",
+                                                                                json_schema_extra={'uniqueItems': True})
         calculated_directions: int = Field(default=2, description="Calculated number of directions recorded onto the media")
-        actual_directions: int = Field(default=2, description="Actual number of directions recorded onto the media")
-
+        recorded_directions: int = Field(default=2, description="Actual number of directions recorded onto the media")
 
     physical_details: PhysicalDetails = Field(default_factory=PhysicalDetails)
-
-    class Problems(ProblemsBase):
-        pack_deformation: str = Field(default="n/a", description="Details of tape pack deformation")
-        preservation_problems: str = Field(default="n/a", description="Details of preservation problems with the media")
-        structural_damage: str = Field(default="n/a", description="Details of any structural damage to the media")
     
+    class Problems(ProblemsBase):        
+        pack_deformation: SeverityScale = Field(default="none", description="Severity of tape pack deformation")
+        common_problems: CommonTapeProblems = Field(default_factory=list, description="Common tape problems",
+                                                    json_schema_extra={'uniqueItems': True})
+
     problems: Problems = Field(default_factory=Problems)
 
 
 class OpenReelAudio_Sequence(SequenceBase):
-    system: System = Field(default_factory=System)
-
     model_config = ConfigDict(use_enum_values=True)
-    TapeSpeed: ClassVar = string_enum('TapeSpeed', ['7.5 ips', '3.75 ips', '1.875 ips', '0.9375 ips', '0.46875 ips', 'unknown'])
-    tape_speed: TapeSpeed = Field(default='unknown', description="tape playback speed")
-    signal_chain: str = Field(default='TBD', description="to be determined signal chain")
-    SoundField: ClassVar = string_enum('SoundField', ['stereo', 'mono'])
+    system: System = Field(default_factory=System)
+    signal_chain: AudioSignalChain = Field(default_factory=AudioSignalChain,
+                                           description="The signal chain")
+    TapeSpeed: ClassVar = string_enum('TapeSpeed', ['30 ips', '15 ips', '7.5 ips', '3.75 ips', '1.875 ips', '0.9375 ips', '0.46875 ips', 'unknown'])
+    tape_speed: TapeSpeed | list[TapeSpeed] = Field(default='7.5 ips', description="tape playback speed")
+    SoundField: ClassVar = string_enum('SoundField', ['stereo', 'mono', 'dual mono'])
     sound_field: SoundField = Field(default="stereo", description="Recorded sound field")
-    reference_fluxivity: str = Field(default='n/a', description="Reference fluxivity")
-    gain: str = Field(default='n/a', description="Gain")
-    output_voltage: str = Field(default='n/a', description="Output voltage")
-    peak_dbfs: str = Field(default='n/a', description="peak dBfs")                             
+

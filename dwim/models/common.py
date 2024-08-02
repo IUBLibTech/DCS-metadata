@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 from typing import Literal, Optional
 from . import UNSET
-
+from dwim.utils import string_enum
 
 class System(BaseModel):
     """System information"""
@@ -20,7 +20,8 @@ class PhysicalDetailsBase(BaseModel):
 
 class ProblemsBase(BaseModel):
     "Problems with the media"
-    ...
+    comments: str = Field(default="no comment",
+                          description="Comments noting anything unusual about the condition of the media")
 
 
 class MediaBase(BaseModel):
@@ -47,3 +48,21 @@ class SequenceBase(BaseModel):
     comments: str = Field(default="no comment",
                           description="Comments for anything strange or abnormal about the content")
     
+
+SeverityScale = string_enum("SeverityScale", ['none', 'minor', 'moderate', 'severe'])    
+
+CommonTapeProblems = string_enum("CommonTapeProblems", ["damaged tape", "damaged shell",
+                                                        "fungus", "soft binder syndrome",
+                                                        "other contaminants", "vinegar syndrome"])
+
+
+class AudioSignalChain(BaseModel):
+    data: str = Field(default="TBD", description="Audio Signal chain information TBD")
+
+
+class VideoSignalChain(BaseModel):
+    data: str = Field(default="TBD", description="Video Signal chain information TBD")
+
+
+VideoStandard = string_enum("VideoStandard", ['ntsc', 'pal', 'secam', 'unknown'])
+VideoImageFormat = string_enum("VideoImageFormat", ['4:3', '16:9', '4:3 anamorphic', '4:3 letterbox'])

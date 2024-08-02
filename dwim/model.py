@@ -7,6 +7,8 @@ import json
 from dwim.models.project import Project
 from dwim.models.media.audiocassette import Audiocassette_Media, AudioCassette_Sequence
 from dwim.models.media.open_reel_audio import OpenReelAudio_Media, OpenReelAudio_Sequence
+from dwim.models.media.betacam import Betacam_Media, Betacam_Sequence
+from dwim.models.media.umatic import Umatic_Media, Umatic_Sequence
 from dwim.models import UNSET
 
 model_map = {
@@ -14,7 +16,11 @@ model_map = {
     'audiocassette-media': Audiocassette_Media,
     'audiocassette-sequence': AudioCassette_Sequence,
     'open_reel_audio-media': OpenReelAudio_Media,
-    'open_reel_audio-sequence': OpenReelAudio_Sequence
+    'open_reel_audio-sequence': OpenReelAudio_Sequence,
+    'betacam-media': Betacam_Media,
+    'betacam-sequence': Betacam_Sequence,
+    'umatic-media': Umatic_Media,
+    'umatic-sequence': Umatic_Sequence,
 }
 
 class Model:
