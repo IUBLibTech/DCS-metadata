@@ -19,7 +19,7 @@ class OpenReelAudio_Media(MediaBase):
         tape_thickness: float = Field(default=1.4, description="Tape thickness in mil")        
         tape_base: str = Field(default="n/a", description="Base material for the tape")
         TapeConfiguration: ClassVar = string_enum("TapeConfiguration", ['full', 'half', 'quarter', 'unknown'])
-        track_configuration: TapeConfiguration | list(TapeConfiguration)= Field(default="half", 
+        track_configuration: TapeConfiguration | list[TapeConfiguration]= Field(default="half", 
                                                                                 description="Recorded Track Configuration",
                                                                                 json_schema_extra={'uniqueItems': True})
         calculated_directions: int = Field(default=2, description="Calculated number of directions recorded onto the media")
@@ -27,9 +27,10 @@ class OpenReelAudio_Media(MediaBase):
 
     physical_details: PhysicalDetails = Field(default_factory=PhysicalDetails)
     
-    class Problems(ProblemsBase):        
+    class Problems(ProblemsBase):   
+        model_config = ConfigDict(use_enum_values=True)     
         pack_deformation: SeverityScale = Field(default="none", description="Severity of tape pack deformation")
-        common_problems: CommonTapeProblems = Field(default_factory=list, description="Common tape problems",
+        common_problems: list[CommonTapeProblems] = Field(default_factory=list, description="Common tape problems",
                                                     json_schema_extra={'uniqueItems': True})
 
     problems: Problems = Field(default_factory=Problems)

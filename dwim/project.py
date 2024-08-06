@@ -3,6 +3,7 @@ import logging
 import re
 #from .schemas import Schema
 from .model import Model
+from dwim.models.structure import Structure
 import yaml
 from .utils import validate_id
 from .profiles import Profile
@@ -26,14 +27,12 @@ class Project:
             self.project_root.mkdir()
             schema_dir = self.project_root / "schemas"
             schema_dir.mkdir()
-            project = Model("project")                        
-            project.write_json_schema(schema_dir)
-            
+            project = Model("project")                                    
             if defaults:
                 project.patch(defaults)
             project.patch({"system.project_id": name})
-            with open(self.project_root / "project.yaml", "w") as f:
-                f.write(project.get_yaml_text("schemas/"))
+            project.write_file(self.project_root / "project.yaml", 
+                               schemadir=schema_dir)
 
         self.refresh_project()
 
@@ -46,8 +45,6 @@ class Project:
 
         # load the physical objects
         ...
-
-
 
 
     def add_physical_object(self, profile: Profile, physical_id: str, physical_type: str,
@@ -63,18 +60,22 @@ class Project:
                 
         # get the schema for this type
         media = Model(f"{physical_type}-media")        
-        media.write_json_schema(self.project_root / "schemas")
-
         media.patch(config.media_defaults)
         media.patch(defaults)
         media.patch({'system.profile': profile.name,
                      'system.project_id': self.name,
-                     'system.physical_object_id': physical_id})
- 
+                     'system.physical_object_id': physical_id}) 
         po_path.mkdir()
-        with open(po_path / "physical_object.yaml", "w") as f:
-            f.write(media.get_yaml_text("../schemas/"))
+        media.write_file(po_path / "physical_object.yaml",
+                         schemadir=self.project_root / "schemas")
         
+        structfile = self.project_root / "structure.yaml"        
+        struct = Model.read_file(structfile, empty_ok=True, model_name="structure")
+        s: Structure = struct.data
+        s.object_structure.append(physical_id)
+        struct.write_file(structfile, 
+                          schemadir=self.project_root / "schemas")
+
         if config.sequence_count:
             # create sequence stubs
             for s in range(1, config.sequence_count + 1):
@@ -88,19 +89,16 @@ class Project:
             raise FileNotFoundError(f"Physical object with ID {physical_id} doesn't exist")
         config = profile.get_po_config(physical_type)        
         id_fields = validate_id(physical_id, config.id_pattern, config.id_validators, exact=True)
-
-    
         
         for use, usedata in config.uses.items():
             if usedata.optional:
                 continue
-            
             # create media stub file
             (po_path / usedata.pattern.format(**id_fields, sequence_id=seqno)).touch()
+
             #  create metadata if it's specified.
             if usedata.has_metadata:
                 seq_meta = Model(f"{physical_type}-sequence")
-                seq_meta.write_json_schema(self.project_root / "schemas")
                 mdfile = po_path / ((usedata.pattern.format(**id_fields, sequence_id=seqno)) + ".yaml")
                 if mdfile.exists():
                     logging.warn(f"Not overwriting {mdfile} when creating sequence")
@@ -114,7 +112,7 @@ class Project:
                                'system.project_id': self.name,
                                'system.physical_object_id': physical_id,
                                'system.sequence_id': seqno})
-                                
-                with open(mdfile, "w") as f:
-                    f.write(seq_meta.get_yaml_text("../schemas/"))
+                seq_meta.write_file(mdfile, 
+                                    schemadir=self.project_root / "schemas")                                
+
 

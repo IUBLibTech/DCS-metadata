@@ -2,7 +2,7 @@ name: avps
 
 physical_objects:
   default:
-    id_pattern: "AVPS_{barcode:14s}"
+    id_pattern: "AVPS_{id:14s}"
     id_validators:
       barcode: [luhn]    
     uses: {}
@@ -12,14 +12,14 @@ physical_objects:
     sequence_count: 2  
     uses:
       pres:
-        pattern: AVPS_{barcode:14s}_{sequence_id:02d}_pres.wav
+        pattern: AVPS_{id:14s}_{sequence_id:02d}_pres.wav
         has_metadata: true
                 
       prod: 
-        pattern: AVPS_{barcode:14s}_{sequence_id:02d}_prod.wav
+        pattern: AVPS_{id:14s}_{sequence_id:02d}_prod.wav
 
       presInt:
-        pattern: AVPS_{barcode:14s}_{sequence_id:02d}_presInt.wav
+        pattern: AVPS_{id:14s}_{sequence_id:02d}_presInt.wav
         optional: true
         
   _video:
@@ -28,11 +28,11 @@ physical_objects:
       label: recording {sequence_id}
     uses:
       pres:
-        pattern: AVPS_{barcode:14s}_{sequence_id:02d}_pres.mkv
+        pattern: AVPS_{id:14s}_{sequence_id:02d}_pres.mkv
         has_metadata: true
 
       mezz:
-        pattern: AVPS_{barcode:14s}_{sequence_id:02d}_mezz.mov
+        pattern: AVPS_{id:14s}_{sequence_id:02d}_mezz.mov
 
 
 

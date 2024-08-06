@@ -18,13 +18,13 @@ class Betacam_Media(MediaBase):
         CarrierSize: ClassVar = string_enum("CarrierSize", ["large", "small"])
         carrier_size: CarrierSize = Field(default="small", description="Tape cassette size")
         BetacamType: ClassVar = string_enum("BetacamType", ["oxide", "sp", "digital", "sx", "imx"])
-        tape_type: BetacamType = Field(default="sp", 
+        tape_type: BetacamType = Field(default="sp",
                                        description="Betacam tape type")
         
     physical_details: PhysicalDetails = Field(default_factory=PhysicalDetails)
     
     class Problems(ProblemsBase):                
-        common_problems: CommonTapeProblems = Field(default_factory=list, description="Common tape problems",
+        common_problems: list[CommonTapeProblems] = Field(default_factory=list, description="Common tape problems",
                                                     json_schema_extra={'uniqueItems': True})
         cleaned_date: str = Field(default="none", 
                                   description="Cleaning date",

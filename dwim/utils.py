@@ -97,10 +97,10 @@ def string_enum(classname: str, names: list) -> Enum:
             text = "_" + text
         ntext = ""
         for i, c in enumerate(text):
-            if c not in string.ascii_letters or c not in string.digits:
+            if c not in string.ascii_letters and c not in string.digits:
                 ntext +=  '_'
             else:
-                ntext += c
+                ntext += c     
         return ntext
 
     return Enum(classname, {str2identifier(x): x for x in names})

@@ -23,9 +23,10 @@ class Audiocassette_Media(MediaBase):
 
     physical_details: PhysicalDetails = Field(default_factory=PhysicalDetails)
 
-    class Problems(ProblemsBase):        
+    class Problems(ProblemsBase):       
+        model_config = ConfigDict(use_enum_values=True)
         pack_deformation: SeverityScale = Field(default="none", description="Severity of tape pack deformation")
-        common_problems: CommonTapeProblems = Field(default_factory=list, description="Common tape problems",
+        common_problems: list[CommonTapeProblems] = Field(default_factory=list, description="Common tape problems",
                                                     json_schema_extra={'uniqueItems': True})
 
     problems: Problems = Field(default_factory=Problems)
