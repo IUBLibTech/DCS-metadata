@@ -151,6 +151,9 @@ The example will be a simple one:
 * a single audiocassette with a case labeled "potato"
 * call number SB211.P8 B56
 
+---
+
+NOTE: EVERYTHING BELOW HERE IS WOEFULLY OUT OF DATE
 
 ### Set up a project environment
 Every digitization project will need an ID -- it could be a VA number or some

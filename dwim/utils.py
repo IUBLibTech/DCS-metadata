@@ -4,6 +4,9 @@ Useful utilities
 from string import Formatter
 import re
 import luhn
+from enum import Enum
+import string
+
 
 def format_string_to_regex(fmtstring, strmatch='*'):
     """Given a python format string, convert it to a regex and return field names"""
@@ -86,6 +89,22 @@ def validate_id(the_id: str, id_pattern: str, id_validators: dict, exact=False) 
     else:
         raise ValueError(f"ID Match for '{the_id}' fails for pattern '{id_pattern}'")
     
+
+def string_enum(classname: str, names: list) -> Enum:
+    """Create an enum class where the names map to themselves"""
+    def str2identifier(text):
+        if text[0] not in string.ascii_letters:
+            text = "_" + text
+        ntext = ""
+        for i, c in enumerate(text):
+            if c not in string.ascii_letters and c not in string.digits:
+                ntext +=  '_'
+            else:
+                ntext += c     
+        return ntext
+
+    return Enum(classname, {str2identifier(x): x for x in names})
+
 
 if __name__ == "__main__":    
     regex, fields = format_string_to_regex("MDPI_{barcode:14d}_{sequence:02d}_{use:s}.mp4", strmatch='*')
