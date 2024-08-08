@@ -42,7 +42,7 @@ class OpenReelAudio_Sequence(SequenceBase):
     signal_chain: AudioSignalChain = Field(default_factory=AudioSignalChain,
                                            description="The signal chain")
     TapeSpeed: ClassVar = string_enum('TapeSpeed', ['30 ips', '15 ips', '7.5 ips', '3.75 ips', '1.875 ips', '0.9375 ips', '0.46875 ips', 'unknown'])
-    tape_speed: TapeSpeed | list[TapeSpeed] = Field(default='7.5 ips', description="tape playback speed")
+    tape_speed: set[TapeSpeed] = Field(default_factory=lambda: set(['7.5 ips']), description="tape playback speed")
     SoundField: ClassVar = string_enum('SoundField', ['stereo', 'mono', 'dual mono'])
     sound_field: SoundField = Field(default="stereo", description="Recorded sound field")
 
