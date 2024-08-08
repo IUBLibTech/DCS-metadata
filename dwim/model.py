@@ -12,6 +12,27 @@ from dwim.models.media.umatic import Umatic_Media, Umatic_Sequence
 from dwim.models.structure import Structure
 from dwim.models import UNSET
 
+# do some YAML magic to handle sets...
+class MySafeDumper(yaml.SafeDumper):
+    # Indent arrays per https://stackoverflow.com/questions/25108581/python-yaml-dump-bad-indentation
+    def increase_indent(self, flow=False, indentless=False):
+        return super(MySafeDumper, self).increase_indent(flow, False)
+
+def represent_set(dumper, data):
+    return dumper.represent_sequence(yaml.resolver.BaseResolver.DEFAULT_SEQUENCE_TAG, data, flow_style=True)
+    #return dumper.represent_sequence("set", data, flow_style=True)
+
+def represent_list(dumper, data):
+    # we flow if there are only scalars
+    flow = all([type(x) in (str, bool, int, float) for x in data])
+    return dumper.represent_sequence(yaml.resolver.BaseResolver.DEFAULT_SEQUENCE_TAG, data, flow_style=flow)
+
+
+MySafeDumper.add_representer(set, represent_set )
+#MySafeDumper.add_representer(list, represent_list)
+                            
+
+
 model_map = {
     'project': Project,
     'audiocassette-media': Audiocassette_Media,
@@ -72,8 +93,18 @@ class Model:
         """Get the yaml file text for the data given."""
         # prepend the schema information for the yaml language server        
         txt = f"# yaml-language-server: $schema={schema}\n" if schema else ""
-        txt += yaml.safe_dump(self.data.model_dump(), sort_keys=False, default_flow_style=False, 
-                              indent=4, width=80)
+        txt += yaml.dump(self.data.model_dump(), 
+                         Dumper=MySafeDumper,
+                         sort_keys=False, 
+                         default_flow_style=False, 
+                         allow_unicode=True, 
+                         indent=4, width=80)
+
+        #txt += yaml.safe_dump(self.data.model_dump(), 
+        #                      sort_keys=False, 
+        #                      default_flow_style=False, 
+        #                      allow_unicode=True, 
+        #                      indent=4, width=80)
         if clean:
             # clean up the text itself and clear out "unset" things...
             txt = txt.replace(UNSET, '')

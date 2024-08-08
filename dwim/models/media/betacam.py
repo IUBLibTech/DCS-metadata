@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field, ConfigDict
 from typing import Literal, Optional, ClassVar
 from enum import Enum
+import datetime
 
 from .. import UNSET
 from ..common import AudioSignalChain, CommonTapeProblems, SeverityScale, System, MediaBase, PhysicalDetailsBase, ProblemsBase, SequenceBase, VideoImageFormat, VideoSignalChain, VideoStandard
@@ -26,12 +27,12 @@ class Betacam_Media(MediaBase):
     class Problems(ProblemsBase):                
         common_problems: list[CommonTapeProblems] = Field(default_factory=list, description="Common tape problems",
                                                     json_schema_extra={'uniqueItems': True})
-        cleaned_date: str = Field(default="none", 
-                                  description="Cleaning date",
-                                  json_schema_extra={'format': 'date'})
-        baked_date: str = Field(default="none", 
-                                  description="Baking date",
-                                  json_schema_extra={'format': 'date'})
+        cleaned_date: Literal["none"] | datetime.date = Field(default="none", 
+                                  description="Cleaning date in YYYY-MM-DD or 'none'")
+
+        baked_date: Literal["none"] | datetime.date = Field(default="none", 
+                                  description="Baking date in YYYY-MM-DD or 'none'")
+
 
     problems: Problems = Field(default_factory=Problems)
 
@@ -42,9 +43,9 @@ class Betacam_Sequence(SequenceBase):
     signal_chain: VideoSignalChain = Field(default_factory=VideoSignalChain,
                                            description="The signal chain")
     SoundField: ClassVar = string_enum('SoundField', ['stereo', 'mono', 'split tracks', 'ch1', 'ch2', 'ch3', 'ch4'])
-    sound_field: list[SoundField] = Field(default_factory=lambda: list(["stereo"]), 
-                                          description="Recorded sound field",
-                                          json_schema_extra={'uniqueItems': True})    
+    sound_field: set[SoundField] = Field(default_factory=lambda: set(["stereo"]), 
+                                          description="Recorded sound field")
+                                          #json_schema_extra={'uniqueItems': True})    
     video_standard: VideoStandard = Field(default="ntsc", description="Video signal standard")
     image_format: VideoImageFormat = Field(default="4:3", description="Video image format")
     
