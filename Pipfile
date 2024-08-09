@@ -11,6 +11,7 @@ pydantic = "*"
 mergedeep = "*"
 luhn = "*"
 jsonpath-ng = "*"
+python-magic = "*"
 
 [dev-packages]
 

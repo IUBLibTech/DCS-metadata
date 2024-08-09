@@ -14,7 +14,14 @@ physical_objects:
       pres:
         pattern: AVPS_{id:14s}_{sequence_id:02d}_pres.wav
         has_metadata: true
-                
+        qc:
+          format: []
+
+          audio: []
+
+          video: []
+
+
       prod: 
         pattern: AVPS_{id:14s}_{sequence_id:02d}_prod.wav
 
