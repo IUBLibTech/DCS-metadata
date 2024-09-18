@@ -182,7 +182,7 @@ if __name__ == "__main__":
           ],
           'video': [
               {'$or': [{'width': 640, 'height': 480},
-                       {'width': 1024, 'height': 768}]},
+                       {'width': 480, 'height': 360}]},
               {'$and': [{'width': 717, 'height': 480},
                         {'width': 718, 'height': 480}]}
 
