@@ -18,7 +18,10 @@ class Umatic_Media(MediaBase):
         nominal_duration: str = Field(default=UNSET, description="Nominal duration of the media")
         CarrierSize: ClassVar = string_enum("CarrierSize", ["large", "small"])
         carrier_size: CarrierSize = Field(default="small", description="Tape cassette size")
-        
+        FormatVersion: ClassVar = string_enum('FormatVersion', ['high band', 'low band', "sp"])
+        format_version: FormatVersion = Field(default='high band', description="Recording format")
+
+
     physical_details: PhysicalDetails = Field(default_factory=PhysicalDetails)
     
     class Problems(ProblemsBase):              
@@ -28,7 +31,6 @@ class Umatic_Media(MediaBase):
                                   description="Cleaning date in YYYY-MM-DD or 'none'")
         baked_date: Literal['none'] | datetime.date = Field(default="none", 
                                   title="Baking date in YYYY-MM-DD or 'none'")
-
     problems: Problems = Field(default_factory=Problems)
 
 
@@ -43,6 +45,4 @@ class Umatic_Sequence(SequenceBase):
                                           json_schema_extra={'uniqueItems': True})    
     video_standard: VideoStandard = Field(default="ntsc", description="Video signal standard")
     image_format: VideoImageFormat = Field(default="4:3", description="Video image format")
-    FormatVersion: ClassVar = string_enum('FormatVersion', ['high band', 'low band'])
-    format_version: FormatVersion = Field(default='high band', description="Recording format")
     

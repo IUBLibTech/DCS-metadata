@@ -1,5 +1,5 @@
-from pydantic import BaseModel, Field
-from typing import Literal, Optional
+from pydantic import BaseModel, Field, ConfigDict
+from typing import Literal, Optional, ClassVar
 from . import UNSET
 from dwim.utils import string_enum
 
@@ -57,8 +57,11 @@ CommonTapeProblems = string_enum("CommonTapeProblems", ["damaged tape", "damaged
 
 
 class AudioSignalChain(BaseModel):
-    data: str = Field(default="TBD", description="Audio Signal chain information TBD")
-
+    model_config = ConfigDict(use_enum_values=True)
+    AudioDecks: ClassVar = string_enum("AudioDecks", ["none", "asdfa 3523", "asdfasdf 3423"])
+    deck: AudioDecks = Field(default="none")
+    ad: str = Field(default="none")
+    computer: str = Field(default="none")
 
 class VideoSignalChain(BaseModel):
     data: str = Field(default="TBD", description="Video Signal chain information TBD")
@@ -66,3 +69,4 @@ class VideoSignalChain(BaseModel):
 
 VideoStandard = string_enum("VideoStandard", ['ntsc', 'pal', 'secam', 'unknown'])
 VideoImageFormat = string_enum("VideoImageFormat", ['4:3', '16:9', '4:3 anamorphic', '4:3 letterbox'])
+
