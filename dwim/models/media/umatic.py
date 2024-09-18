@@ -8,7 +8,7 @@ from ..common import AudioSignalChain, CommonTapeProblems, SeverityScale, System
 from dwim.utils import string_enum
 
 class Umatic_Media(MediaBase):
-    """Physical Description of OpenReelTape carrier"""
+    """Physical description of Umatic carrier"""
     system: System = Field(default_factory=System)
     media_type: Literal["umatic"] = "umatic"
 
