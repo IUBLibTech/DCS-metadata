@@ -1,3 +1,6 @@
+# IMPORTANT NOTE
+This repository has been retired in favor of the dwim repository on IU's github.
+
 # DWIM - Digitization Workflow Information Manager
 
 Metadata schemas and tools to support digitization workflows
